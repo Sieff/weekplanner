@@ -1,16 +1,10 @@
-form {
-    border: 2px solid #282c34;
-    max-width: 500px;
+.container {
+    padding: var(--pad-l);
+    border: #089E9B 2px solid;
+    border-radius: var(--border-radius-l);
 
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    justify-content: flex-start;
-}
-
-input {
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
+    gap: var(--pad-m);
 }

@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import {selectModules} from "../state/ModulesStateSlice";
-import {ModuleEditor} from "./ModuleEditor";
 import styles from "./ModulesManager.module.scss"
+import ModuleEditor from "./ModuleEditor";
 
 export const ModulesManager = () => {
     const modules = useSelector(selectModules)

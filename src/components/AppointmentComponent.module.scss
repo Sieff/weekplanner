@@ -1,23 +1,20 @@
 .appointment {
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+  padding: var(--pad-m);
+  border-radius: var(--border-radius-m);
+  box-shadow: var(--shadow);
 
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
   flex-direction: column;
-  line-height: 15px;
-
-  p {
-    font-weight: bold;
-  }
 }
 
 .appointmentField {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: var(--pad-s);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
 }
