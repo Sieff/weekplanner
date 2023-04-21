@@ -1,0 +1,43 @@
+.button {
+  padding: var(--pad-m);
+  border-radius: var(--border-radius-s);
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(#0000, rgb(0 0 0/40%)) top/100% 800%;
+  transition: 0.3s;
+}
+
+.button:hover {
+  background-position: bottom;
+}
+
+.inactive {
+  color: white;
+  background-color: var(--color-inactive);
+  box-shadow: 0 6px 18px -5px var(--color-inactive);
+}
+
+.secondary {
+  color: white;
+  background-color: var(--color-secondary);
+  box-shadow: 0 6px 18px -5px var(--color-secondary);
+}
+
+.primary {
+  color: white;
+  background-color: var(--color-primary);
+  box-shadow: 0 6px 18px -5px var(--color-primary);
+}
+
+.danger {
+  color: white;
+  background-color: var(--color-danger);
+  box-shadow: 0 6px 18px -5px var(--color-danger);
+}
+
+.accept {
+  color: white;
+  background-color: var(--color-accept);
+  box-shadow: 0 6px 18px -5px var(--color-accept);
+}

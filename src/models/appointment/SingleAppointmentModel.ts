@@ -1,8 +1,10 @@
+import {AppointmentModel} from "./AppointmentModel";
 import {Weekday} from "../Weekday";
-import { v4 as uuid } from "uuid";
-import {Moment} from "moment";
+import {Moment} from "moment/moment";
+import {v4 as uuid} from "uuid";
 
-export class Appointment {
+export class SingleAppointmentModel implements AppointmentModel {
+
     private _id: string;
     private _title: string;
     private _weekday: Weekday;

@@ -1,11 +1,11 @@
-import styles from "./AppointmentCreator.module.scss";
+import styles from "./Modal/AppointmentCreatorModal.module.scss";
 import {useForm} from "react-hook-form";
 import {Module} from "../models/Module";
-import {AppointmentCreator} from "./AppointmentCreator";
-import {Appointment} from "../models/appointment/Appointment";
-import {FixedAppointment} from "./FixedAppointment";
+import {AppointmentCreatorModal} from "./Modal/AppointmentCreatorModal";
+import {AppointmentComponent} from "./AppointmentComponent";
 import {useDispatch} from "react-redux";
-import {addFixedAppointment} from "../state/ModulesStateSlice";
+import {addSingleAppointment} from "../state/ModulesStateSlice";
+import {SingleAppointmentModel} from "../models/appointment/SingleAppointmentModel";
 
 type ModuleEditorProps = {
     module: Module
@@ -15,8 +15,8 @@ export const ModuleEditor = ({module}: ModuleEditorProps) => {
 
     const dispatch = useDispatch()
 
-    const onCreate = (appointment: Appointment) => {
-        dispatch(addFixedAppointment({module, appointment}));
+    const onCreate = (appointment: SingleAppointmentModel) => {
+        dispatch(addSingleAppointment({module, appointment}));
     };
 
     return (
@@ -26,10 +26,10 @@ export const ModuleEditor = ({module}: ModuleEditorProps) => {
                     Name:
                     <input {...register("name")} type="text" />
                 </label>
-                {Object.entries(module.fixedAppointments).map(([id, appointment]) => <FixedAppointment appointment={appointment} key={id} />)}
+                {Object.entries(module.appointments).map(([id, appointment]) => <AppointmentComponent appointment={appointment} key={id} />)}
                 <input type="submit" value="Submit"/>
             </form>
-            <AppointmentCreator submitCallback={onCreate} />
+            <AppointmentCreatorModal submitCallback={onCreate} />
         </div>
     )
 }

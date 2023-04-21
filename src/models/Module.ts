@@ -1,22 +1,20 @@
-import {OptionalAppointment} from "./appointment/OptionalAppointment";
-import {FixedAppointmentModel} from "./appointment/FixedAppointmentModel";
+import {OptionalAppointmentModel} from "./appointment/OptionalAppointmentModel";
 import { v4 as uuid } from "uuid";
 import {immerable} from "immer"
+import {AppointmentModel} from "./appointment/AppointmentModel";
 
 export class Module {
     [immerable] = true
     private _id: string;
     private _title: string;
-    private _optionalAppointments: { [key: string]: OptionalAppointment };
-    private _fixedAppointments: { [key: string]: FixedAppointmentModel };
+    private _appointments: { [key: string]: AppointmentModel };
 
     constructor(title: string);
-    constructor(title: string, optionalAppointments: { [key: string]: OptionalAppointment }, fixedAppointments: { [key: string]: FixedAppointmentModel });
-    constructor(title: string, optionalAppointments?: { [key: string]: OptionalAppointment }, fixedAppointments?: { [key: string]: FixedAppointmentModel }) {
+    constructor(title: string, appointments: { [key: string]: OptionalAppointmentModel });
+    constructor(title: string, appointments?: { [key: string]: OptionalAppointmentModel }) {
         this._id = uuid();
         this._title = title;
-        this._optionalAppointments = optionalAppointments ?? {};
-        this._fixedAppointments = fixedAppointments ?? {};
+        this._appointments = appointments ?? {};
     }
 
     get id(): string {
@@ -27,11 +25,7 @@ export class Module {
         return this._title;
     }
 
-    get optionalAppointments(): { [key: string]: OptionalAppointment } {
-        return this._optionalAppointments;
-    }
-
-    get fixedAppointments(): { [key: string]: FixedAppointmentModel } {
-        return this._fixedAppointments;
+    get appointments(): { [key: string]: AppointmentModel } {
+        return this._appointments;
     }
 }

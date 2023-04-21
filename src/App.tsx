@@ -1,12 +1,13 @@
 import React from 'react';
-import './App.css';
-import {ModuleManager} from "./components/ModuleManager";
+import './styles/styles.css';
+import {ModulesManager} from "./components/ModulesManager";
+import {PortalRoot} from "./components/Portal";
 
 function App() {
   return (
-    <div className="App">
-      <ModuleManager />
-    </div>
+      <PortalRoot>
+          <ModulesManager />
+      </PortalRoot>
   );
 }
 

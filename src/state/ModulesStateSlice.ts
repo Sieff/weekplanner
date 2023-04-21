@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Module} from "../models/Module";
 import {RootState} from "../store";
-import {FixedAppointmentModel} from "../models/appointment/FixedAppointmentModel";
+import {SingleAppointmentModel} from "../models/appointment/SingleAppointmentModel";
 
 const firstModule = new Module("Mein erstes Modul");
 // Define the initial state using that type
@@ -18,20 +18,20 @@ export const ModuleStateSlice = createSlice({
         remove: (state, action: PayloadAction<Module>) => {
             delete state[action.payload.id];
         },
-        addFixedAppointment: (state, action: PayloadAction<AddFixedAppointmentPayload>) => {
+        addSingleAppointment: (state, action: PayloadAction<AddFixedAppointmentPayload>) => {
             const appointment = action.payload.appointment;
-            state[action.payload.module.id].fixedAppointments[appointment.id] = appointment;
+            state[action.payload.module.id].appointments[appointment.id] = appointment;
         }
     },
 })
 
 type AddFixedAppointmentPayload = {
     module: Module;
-    appointment: FixedAppointmentModel;
+    appointment: SingleAppointmentModel;
 }
 
 // Action creators are generated for each case reducer function
-export const { add, remove, addFixedAppointment } = ModuleStateSlice.actions
+export const { add, remove, addSingleAppointment } = ModuleStateSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectModules = (state: RootState) => state.modules
