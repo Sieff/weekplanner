@@ -16,14 +16,23 @@
     --color-accept: #5fd316;
 }
 
-h2 {
-    font-size: 28px;
-    line-height: 40px;
+h1 {
+    font-size: 30px;
+    line-height: 38px;
     font-weight: bold;
+    margin: var(--pad-l) 0;
+}
+
+h2 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: bold;
+    margin: var(--pad-m) 0;
 }
 
 h3 {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 26px;
     font-weight: bold;
+    margin: var(--pad-s) 0;
 }

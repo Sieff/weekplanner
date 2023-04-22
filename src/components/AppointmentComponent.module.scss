@@ -1,20 +1,8 @@
 .appointment {
-  padding: var(--pad-m);
-  border-radius: var(--border-radius-m);
-  box-shadow: var(--shadow);
+    padding: var(--pad-m);
+    border-radius: var(--border-radius-m);
+    box-shadow: var(--shadow);
 
-  display: flex;
-  flex-direction: column;
-}
-
-.appointmentField {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: var(--pad-s);
-}
-
-.section {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }

@@ -1,16 +1,25 @@
-import {useSelector} from "react-redux";
-import {selectModules} from "../state/ModulesStateSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {addModule, selectModules} from "../state/ModulesStateSlice";
 import styles from "./ModulesManager.module.scss"
-import ModuleEditor from "./ModuleEditor";
+import {ModuleComponent} from "./ModuleComponent";
+import {ModuleCreatorModal, ModuleFormData} from "./Modal/ModuleCreatorModal";
+import {ModuleModel} from "../models/ModuleModel";
 
 export const ModulesManager = () => {
     const modules = useSelector(selectModules)
+    const dispatch = useDispatch()
+
+    const onCreate = (moduleFormData: ModuleFormData) => {
+        const newModule = new ModuleModel(moduleFormData.title);
+        dispatch(addModule(newModule));
+    };
 
     return (
-        <div className={styles.moduleManager}>
+        <div className={styles.container}>
             {Object.entries(modules).map(([id, module]) => {
-                return (<ModuleEditor module={module} key={id}/>)
+                return (<ModuleComponent module={module} key={id}/>)
             })}
+            <ModuleCreatorModal submitCallback={onCreate} />
         </div>
     )
 }

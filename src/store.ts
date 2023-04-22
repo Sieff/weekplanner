@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import {ModuleStateSlice} from "./state/ModulesStateSlice";
-import {AppointmentsStateSlice} from "./state/AppointmentsStateSlice";
 
 const store = configureStore({
     reducer: {
         modules: ModuleStateSlice.reducer,
-        appointments: AppointmentsStateSlice.reducer
     },
 });
 

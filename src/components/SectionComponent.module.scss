@@ -1,0 +1,12 @@
+.appointmentField {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--pad-s);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pad-s);
+}

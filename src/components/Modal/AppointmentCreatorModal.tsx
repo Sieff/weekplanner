@@ -17,7 +17,7 @@ type AppointmentCreatorProps = {
 };
 
 export type AppointmentFormData = {
-    name: string;
+    title: string;
     start: Moment;
     end: Moment;
     weekday: Weekday;
@@ -31,7 +31,7 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
     const onSubmit = (data: FieldValues) => {
         const start = TimeService.ParseTime(data.start);
         const end = TimeService.ParseTime(data.end);
-        submitCallback({name: data.name, start, end, weekday: data.weekday});
+        submitCallback({title: data.title, start, end, weekday: data.weekday});
     };
 
     const openModal = useCallback(
@@ -51,12 +51,12 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
 
     return (
         <>
-            <Button onClick={openModal}>+</Button>
+            <Button onClick={openModal}>Veranstaltung hinzufügen</Button>
             {show && (
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neue Veranstaltung"}>
                     <form className={formstyles.form}>
                         <div className={formstyles.input}>
-                            <input className={formstyles.inputField} {...register("name")} type="text" />
+                            <input className={formstyles.inputField} {...register("title")} type="text" />
                             <label className={formstyles.inputLabel}>
                                 Name
                             </label>
