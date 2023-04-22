@@ -1,6 +1,12 @@
 .appointment {
-    height: 40px;
-    width: 40px;
-    background-color: #EA3023;
     position: absolute;
+    background-color: white;
+    border: 2px solid var(--color-primary);
+    padding: var(--pad-s);
+    border-radius: var(--border-radius-m);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }

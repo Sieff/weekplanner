@@ -10,7 +10,11 @@ type AppointmentVisualizerComponentProps = {
 export const AppointmentVisualizerComponent = ({appointment, start, end}: AppointmentVisualizerComponentProps) => {
     if (!start || !end) return <></>;
 
+    const height = end.getBoundingClientRect().bottom - start.getBoundingClientRect().top
+
     return (
-        <div className={styles.appointment} style={{top: start.getBoundingClientRect().top}}>Moin</div>
+        <div className={styles.appointment} style={{top: start.getBoundingClientRect().top, height}}>
+            <h3>{appointment.title}</h3>
+        </div>
     )
 }
