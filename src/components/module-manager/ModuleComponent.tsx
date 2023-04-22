@@ -1,10 +1,10 @@
 import styles from "./ModuleComponent.module.scss";
-import {ModuleModel} from "../models/ModuleModel";
+import {ModuleModel} from "../../models/ModuleModel";
 import {SectionComponent} from "./SectionComponent";
 import {useDispatch} from "react-redux";
-import {addSection} from "../state/ModulesStateSlice";
-import {SectionCreatorModal, SectionFormData} from "./Modal/SectionCreatorModal";
-import {SectionModel} from "../models/SectionModel";
+import {addSection} from "../../state/ModulesStateSlice";
+import {SectionCreatorModal, SectionFormData} from "../modal/SectionCreatorModal";
+import {SectionModel} from "../../models/SectionModel";
 
 type ModuleEditorProps = {
     module: ModuleModel;

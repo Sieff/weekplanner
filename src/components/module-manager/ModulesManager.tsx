@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
-import {addModule, selectModules} from "../state/ModulesStateSlice";
+import {addModule, selectModules} from "../../state/ModulesStateSlice";
 import styles from "./ModulesManager.module.scss"
 import {ModuleComponent} from "./ModuleComponent";
-import {ModuleCreatorModal, ModuleFormData} from "./Modal/ModuleCreatorModal";
-import {ModuleModel} from "../models/ModuleModel";
+import {ModuleCreatorModal, ModuleFormData} from "../modal/ModuleCreatorModal";
+import {ModuleModel} from "../../models/ModuleModel";
 
 export const ModulesManager = () => {
     const modules = useSelector(selectModules)

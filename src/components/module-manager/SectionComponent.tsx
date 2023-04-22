@@ -1,10 +1,10 @@
 import styles from "./SectionComponent.module.scss";
-import {AppointmentCreatorModal, AppointmentFormData} from "./Modal/AppointmentCreatorModal";
+import {AppointmentCreatorModal, AppointmentFormData} from "../modal/AppointmentCreatorModal";
 import {useDispatch} from "react-redux";
-import {SectionModel} from "../models/SectionModel";
-import {addAppointment} from "../state/ModulesStateSlice";
+import {SectionModel} from "../../models/SectionModel";
+import {addAppointment} from "../../state/ModulesStateSlice";
 import {AppointmentComponent} from "./AppointmentComponent";
-import {AppointmentModel} from "../models/AppointmentModel";
+import {AppointmentModel} from "../../models/AppointmentModel";
 
 type SectionComponentProps = {
     section: SectionModel;

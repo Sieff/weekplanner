@@ -1,8 +1,7 @@
 import {Weekday} from "../models/Weekday";
 
 export class WeekdayService {
-    private static _instance: WeekdayService;
-    private readonly _labelDictGerman: {[key in Weekday]: string} = {
+    private static readonly _labelDictGerman: {[key in Weekday]: string} = {
         [Weekday.Monday]: "Montag",
         [Weekday.Tuesday]: "Dienstag",
         [Weekday.Wednesday]: "Mittwoch",
@@ -12,19 +11,11 @@ export class WeekdayService {
         [Weekday.Sunday]: "Sonntag"
     };
 
-    static Instance(): WeekdayService {
-        if (!this._instance) {
-            this._instance = new WeekdayService();
-        }
-
-        return this._instance
-    }
-
-    public AllWeekdays(): Weekday[] {
+    public static AllWeekdays(): Weekday[] {
         return [Weekday.Monday, Weekday.Tuesday, Weekday.Wednesday, Weekday.Thursday, Weekday.Friday, Weekday.Saturday, Weekday.Sunday];
     }
 
-    public GetLabel(weekday: Weekday): string {
+    public static GetLabel(weekday: Weekday): string {
         return this._labelDictGerman[weekday];
     }
 }

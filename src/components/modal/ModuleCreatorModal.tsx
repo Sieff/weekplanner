@@ -1,8 +1,8 @@
 import {FieldValues, useForm} from "react-hook-form";
 import React, {useCallback, useState} from "react";
-import Modal from "./Modal";
 import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
+import Modal from "./Modal";
 
 type ModuleCreatorProps = {
     /**

@@ -3,11 +3,11 @@ import {FieldValues, useForm} from "react-hook-form";
 import {WeekdayService} from "../../services/WeekdayService";
 import React, {useCallback, useState} from "react";
 import {TimeService} from "../../services/TimeService";
-import Modal from "./Modal";
 import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
 import {Moment} from "moment";
 import {Weekday} from "../../models/Weekday";
+import Modal from "./Modal";
 
 type AppointmentCreatorProps = {
     /**
@@ -63,7 +63,7 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
                         </div>
                         <div className={styles.timeRow}>
                             <div className={formstyles.input}>
-                                <input className={formstyles.inputField} {...register("start")} type="time" />
+                                <input className={formstyles.inputField} {...register("start")} type="time" step="900" min="07:00" max="23:00" />
                                 <label className={formstyles.inputLabel}>
                                     Startzeit
                                 </label>
@@ -77,10 +77,10 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
                         </div>
                         <div className={formstyles.input}>
                             <select className={formstyles.inputField} {...register("weekday")}>
-                                {WeekdayService.Instance().AllWeekdays().map(weekday => {
+                                {WeekdayService.AllWeekdays().map(weekday => {
                                     return (
                                         <option value={weekday} key={weekday}>
-                                            {WeekdayService.Instance().GetLabel(weekday)}
+                                            {WeekdayService.GetLabel(weekday)}
                                         </option>
                                     )
                                 })}
