@@ -25,7 +25,7 @@ export class TimeService {
         return time.format("HH:mm");
     }
 
-    public GenerateTimeUnits(): TimeUnitModel[] {
+    private GenerateTimeUnits(): TimeUnitModel[] {
         const timeUnits = [];
 
         let current = moment(this._timetableStart);

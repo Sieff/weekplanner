@@ -10,3 +10,10 @@
   flex-direction: column;
   gap: var(--pad-s);
 }
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-divider);
+  margin-top: var(--pad-s);
+}

@@ -29,6 +29,7 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
                 )}
             </div>
             <AppointmentCreatorModal submitCallback={onCreate} />
+            <div className={styles.divider}></div>
         </div>
     )
 }
