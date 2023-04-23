@@ -3,6 +3,8 @@ import React, {useCallback, useState} from "react";
 import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
 import Modal from "./Modal";
+import {cls} from "../../styles/cls";
+import {Info} from "../Info";
 
 type AppointmentCreatorProps = {
     /**
@@ -51,12 +53,16 @@ export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) =
                                 Name
                             </label>
                         </div>
-                        <input type="checkbox" />
-                        <input className={formstyles.inputField} {...register("optional")} type="checkbox" />
                         <div className={formstyles.input}>
-                            <input {...register("optional")} type="checkbox" />
-                            <label className={formstyles.inputLabel}>
-                                Optional?
+                            <input {...register("optional")} className={cls(formstyles.inpCbx, formstyles.inputField)} id="cbx" type="checkbox" style={{display: "none"}}/>
+                            <label className={cls(formstyles.cbx, formstyles.inputLabel)} htmlFor="cbx">
+                                <span>
+                                    <svg width="12px" height="10px" viewBox="0 0 12 10">
+                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                    </svg>
+                                </span>
+                                <span>Optionale Veranstaltungen?</span>
+                                <Info text="Alle Veranstaltungen unter diesem Abschnitt werden als Optionen für eine Veranstaltung behandelt." />
                             </label>
                         </div>
                     </form>

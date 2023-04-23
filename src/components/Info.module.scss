@@ -1,0 +1,22 @@
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}
+
+.toolTip {
+  position: absolute;
+  background-color: var(--color-inactive);
+  color: white;
+  border-radius: var(--border-radius-s);
+  padding: var(--pad-s);
+  max-width: 200px;
+
+  z-index: 999;
+  transform: translate(-50%, calc(-1 * var(--pad-s) - 100%));
+}
