@@ -4,37 +4,46 @@ import {TimeUnitModel} from "../models/TimeUnitModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 
 export class TimeService {
-    static ParseTime(time: string): Moment {
+    private _timetableStart: Moment = moment("08:00", 'HH:mm').utc(true);
+    private _timetableEnd: Moment = moment("20:00", 'HH:mm').utc(true);
+    private _timetableStep: number = 15;
+    private readonly _units = [] as TimeUnitModel[];
+
+    constructor() {
+        this._units = this.GenerateTimeUnits();
+    }
+
+    get units(): TimeUnitModel[] {
+        return this._units;
+    }
+
+    public ParseTime(time: string): Moment {
         return moment(time, 'HH:mm').utc(true);
     }
 
-    static Render(time: Moment): string {
+    public Render(time: Moment): string {
         return time.format("HH:mm");
     }
 
-    static TimetableStart: Moment = moment("08:00", 'HH:mm').utc(true);
-    static TimetableEnd: Moment = moment("20:00", 'HH:mm').utc(true);
-    static TimetableStep: number = 15;
-
-    static GenerateTimeUnits: () => TimeUnitModel[] = () => {
+    public GenerateTimeUnits(): TimeUnitModel[] {
         const timeUnits = [];
 
-        let current = moment(TimeService.TimetableStart);
-        while (current < TimeService.TimetableEnd) {
+        let current = moment(this._timetableStart);
+        while (current < this._timetableEnd) {
             const start = moment(current);
-            const end = moment(current).add(TimeService.TimetableStep, "minutes");
+            const end = moment(current).add(this._timetableStep, "minutes");
             timeUnits.push(new TimeUnitModel(start, end));
-            current.add(TimeService.TimetableStep, "minutes");
+            current.add(this._timetableStep, "minutes");
         }
 
         return timeUnits;
     }
 
-    static GenerateHours: () => Moment[] = () => {
+    public GenerateHours(): Moment[] {
         const hours = [];
 
-        let current = moment(TimeService.TimetableStart);
-        while (current <= TimeService.TimetableEnd) {
+        let current = moment(this._timetableStart);
+        while (current <= this._timetableEnd) {
             hours.push(moment(current));
             current.add(2, "hour");
         }
@@ -42,13 +51,12 @@ export class TimeService {
         return hours;
     }
 
-    static GetTimeUnitId: (time: Moment) => number = (time) => {
-        const units = TimeService.GenerateTimeUnits();
-        if (time < TimeService.TimetableStart) return 1;
-        if (time >= TimeService.TimetableEnd) return units.length + 1;
+    public GetTimeUnitId(time: Moment): number {
+        if (time < this._timetableStart) return 1;
+        if (time >= this._timetableEnd) return this._units.length + 1;
 
         let current: number = 1;
-        units.forEach((unit, idx) => {
+        this._units.forEach((unit, idx) => {
             if (time >= unit.start && time) {
                 current = idx+1;
             }
@@ -57,17 +65,17 @@ export class TimeService {
         return current;
     }
 
-    static GetEmptySlots: (appointments: AppointmentModel[], totalSlots: number) => number[] = (appointments, totalSlots) => {
+    public GetEmptySlots(appointments: AppointmentModel[]): number[] {
         const filledSlots: number[] = [];
         appointments.forEach((appointment) => {
-            const start = TimeService.GetTimeUnitId(appointment.start);
-            const end = TimeService.GetTimeUnitId(appointment.end);
+            const start = this.GetTimeUnitId(appointment.start);
+            const end = this.GetTimeUnitId(appointment.end);
             filledSlots.push(start)
             for (let i = start + 1; i < end; i++) {
                 filledSlots.push(i);
             }
         });
 
-        return Array.from(Array(totalSlots).keys()).map((number) => number + 1).filter((number) => filledSlots.indexOf(number) === -1);
+        return Array.from(Array(this._units.length).keys()).map((number) => number + 1).filter((number) => filledSlots.indexOf(number) === -1);
     }
 }

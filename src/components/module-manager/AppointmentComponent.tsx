@@ -1,14 +1,17 @@
 import {AppointmentModel} from "../../models/AppointmentModel";
-import {WeekdayService} from "../../services/WeekdayService";
 import styles from "./AppointmentComponent.module.scss";
-import {TimeService} from "../../services/TimeService";
+import {TimeServiceContext, WeekdayServiceContext} from "../../services/ServiceProvider";
+import {useContext} from "react";
 
 type SingleAppointmentProps = {
     appointment: AppointmentModel;
 }
 
 export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
-    const weekday = WeekdayService.GetLabel(appointment.weekday);
+    const timeService = useContext(TimeServiceContext);
+    const weekdayService = useContext(WeekdayServiceContext);
+
+    const weekday = weekdayService.GetLabel(appointment.weekday);
 
     return (
         <div className={styles.appointment}>
@@ -17,7 +20,7 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
                 {weekday}
             </div>
             <div>
-                {TimeService.Render(appointment.start) + " - " + TimeService.Render(appointment.end)}
+                {timeService.Render(appointment.start) + " - " + timeService.Render(appointment.end)}
             </div>
         </div>
     )

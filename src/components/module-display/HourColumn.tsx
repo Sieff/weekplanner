@@ -1,15 +1,17 @@
 import styles from "./HourColumn.module.scss";
-import {TimeService} from "../../services/TimeService";
+import {useContext} from "react";
+import {TimeServiceContext} from "../../services/ServiceProvider";
 
 export const HourColumn = () => {
-    const hours = TimeService.GenerateHours();
+    const timeService = useContext(TimeServiceContext);
+    const hours = timeService.GenerateHours();
 
     return (
         <div className={styles.container}>
             <h2 className={styles.centering}>Uhrzeit</h2>
             <div className={styles.lane}>
                 {hours.map((hour, idx) =>
-                    <div key={idx} className={styles.centering}>{TimeService.Render(hour)}</div>)}
+                    <div key={idx} className={styles.centering}>{timeService.Render(hour)}</div>)}
             </div>
         </div>
     )

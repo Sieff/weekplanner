@@ -3,13 +3,16 @@ import './styles/styles.css';
 import {ModulesManager} from "./components/module-manager/ModulesManager";
 import {PortalRoot} from "./components/Portal";
 import {Timetable} from "./components/module-display/Timetable";
+import {ServiceProvider} from "./services/ServiceProvider";
 
 function App() {
   return (
-      <PortalRoot>
-          <Timetable />
-          <ModulesManager />
-      </PortalRoot>
+      <ServiceProvider>
+          <PortalRoot>
+              <Timetable />
+              <ModulesManager />
+          </PortalRoot>
+      </ServiceProvider>
   );
 }
 

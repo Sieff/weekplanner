@@ -1,13 +1,12 @@
 import styles from "./AppointmentCreatorModal.module.scss";
 import {FieldValues, useForm} from "react-hook-form";
-import {WeekdayService} from "../../services/WeekdayService";
-import React, {useCallback, useState} from "react";
-import {TimeService} from "../../services/TimeService";
+import React, {useCallback, useContext, useState} from "react";
 import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
 import {Moment} from "moment";
 import {Weekday} from "../../models/Weekday";
 import Modal from "./Modal";
+import {TimeServiceContext, WeekdayServiceContext} from "../../services/ServiceProvider";
 
 type AppointmentCreatorProps = {
     /**
@@ -24,13 +23,16 @@ export type AppointmentFormData = {
 }
 
 export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
+    const timeService = useContext(TimeServiceContext);
+    const weekdayService = useContext(WeekdayServiceContext);
+
     const {register, handleSubmit} = useForm();
     const [show, setShow] = useState(false);
 
 
     const onSubmit = (data: FieldValues) => {
-        const start = TimeService.ParseTime(data.start);
-        const end = TimeService.ParseTime(data.end);
+        const start = timeService.ParseTime(data.start);
+        const end = timeService.ParseTime(data.end);
         submitCallback({title: data.title, start, end, weekday: data.weekday});
     };
 
@@ -77,10 +79,10 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
                         </div>
                         <div className={formstyles.input}>
                             <select className={formstyles.inputField} {...register("weekday")}>
-                                {WeekdayService.AllWeekdays().map(weekday => {
+                                {weekdayService.AllWeekdays().map(weekday => {
                                     return (
                                         <option value={weekday} key={weekday}>
-                                            {WeekdayService.GetLabel(weekday)}
+                                            {weekdayService.GetLabel(weekday)}
                                         </option>
                                     )
                                 })}
