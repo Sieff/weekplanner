@@ -20,6 +20,8 @@ export const TimetableColumn = ({weekday, appointments}: TimetableColumnProps) =
         <div className={styles.container}>
             <h2 className={styles.header}>{weekdayService.GetLabel(weekday)}</h2>
             <div className={styles.swimlane} style={{gridTemplateRows: "repeat(" + timeService.units.length + ", 7px)"}}>
+                {emptySlots.map((idx) =>
+                    <div className={styles.unit} key={idx} style={{gridRow: idx}}></div>)}
                 {appointments.map((appointment, idx) => {
                     return (
                         <AppointmentVisualizerComponent key={idx}
@@ -28,8 +30,6 @@ export const TimetableColumn = ({weekday, appointments}: TimetableColumnProps) =
                                                         end={timeService.GetTimeUnitId(appointment.end)} />
                     )
                 })}
-                {emptySlots.map((idx) =>
-                    <div className={styles.unit} key={idx} style={{gridRow: idx}}></div>)}
             </div>
         </div>
     )
