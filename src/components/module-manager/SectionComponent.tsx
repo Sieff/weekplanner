@@ -20,7 +20,10 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
 
     return (
         <div className={styles.section}>
-            <h3>{section.title}</h3>
+            <div className={styles.header}>
+                <h3>{section.title}</h3>
+                {section.optional && <div className={styles.option}> - optional</div>}
+            </div>
             <div className={styles.appointmentField}>
                 {Object.entries(section.appointments).map(([_, appointment]) => {
                     return (

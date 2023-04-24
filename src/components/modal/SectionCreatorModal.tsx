@@ -1,5 +1,5 @@
 import {FieldValues, useForm} from "react-hook-form";
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
 import Modal from "./Modal";
@@ -19,27 +19,17 @@ export type SectionFormData = {
 }
 
 export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
-    const {register, handleSubmit} = useForm();
+    const {register, handleSubmit, formState: { errors }, reset} = useForm();
     const [show, setShow] = useState(false);
+
+    const openModal = () => setShow(true);
+    const closeModal = () => setShow(false);
 
     const onSubmit = (data: FieldValues) => {
         submitCallback({title: data.title, optional: data.optional});
+        closeModal();
+        reset();
     };
-
-    const openModal = useCallback(
-        () => {
-            setShow(true)
-        },
-        [],
-    );
-
-    const closeModal = useCallback(
-        () => {
-            setShow(false)
-        },
-        [],
-    );
-
 
     return (
         <>
@@ -48,7 +38,9 @@ export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) =
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neuer Abschnitt"}>
                     <form className={formstyles.form}>
                         <div className={formstyles.input}>
-                            <input className={formstyles.inputField} {...register("title")} type="text" />
+                            <input className={cls(formstyles.inputField, errors.title && formstyles.invalidInputField)}
+                                   {...register("title", {required: true})}
+                                   type="text" />
                             <label className={formstyles.inputLabel}>
                                 Name
                             </label>

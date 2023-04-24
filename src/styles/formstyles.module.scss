@@ -43,6 +43,15 @@
   }
 }
 
+.invalidInputField {
+  &:focus, &:valid {
+    border-bottom-color: var(--color-danger);
+    &+.inputLabel {
+      color: var(--color-danger);
+    }
+  }
+}
+
 .cbx {
   margin: auto;
   -webkit-user-select: none;

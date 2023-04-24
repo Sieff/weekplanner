@@ -17,3 +17,14 @@
   background-color: var(--color-divider);
   margin-top: var(--pad-s);
 }
+
+.option {
+  color: var(--color-divider);
+  white-space: pre;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
