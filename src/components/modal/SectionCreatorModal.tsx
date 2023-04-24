@@ -18,8 +18,13 @@ export type SectionFormData = {
     optional: boolean;
 }
 
+const defaultValues = {
+    title: "",
+    optional: false
+}
+
 export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
-    const {register, handleSubmit, formState: { errors }, reset} = useForm();
+    const {register, handleSubmit, formState: { errors, dirtyFields }, reset} = useForm({defaultValues});
     const [show, setShow] = useState(false);
 
     const openModal = () => setShow(true);
@@ -38,7 +43,7 @@ export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) =
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neuer Abschnitt"}>
                     <form className={formstyles.form}>
                         <div className={formstyles.input}>
-                            <input className={cls(formstyles.inputField, errors.title && formstyles.invalidInputField)}
+                            <input className={cls(formstyles.inputField, errors.title && formstyles.inputFieldInvalid, dirtyFields.title && formstyles.inputFieldValid)}
                                    {...register("title", {required: true})}
                                    type="text" />
                             <label className={formstyles.inputLabel}>

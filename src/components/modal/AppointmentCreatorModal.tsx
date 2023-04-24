@@ -23,11 +23,18 @@ export type AppointmentFormData = {
     weekday: Weekday;
 }
 
+const defaultValues = {
+    title: "",
+    start: "",
+    end: "",
+    weekday: ""
+}
+
 export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const {register, handleSubmit, formState: { errors }, reset} = useForm();
+    const {register, handleSubmit, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: defaultValues });
     const [show, setShow] = useState(false);
 
     const validateTimes = (value: string, formValues: FieldValues) => {
@@ -54,8 +61,8 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neue Veranstaltung"}>
                     <form className={formstyles.form}>
                         <div className={formstyles.input}>
-                            <input className={cls(formstyles.inputField, errors.title && formstyles.invalidInputField)}
-                                   {...register("title", {required: true})}
+                            <input className={cls(formstyles.inputField, errors.title && formstyles.inputFieldInvalid, dirtyFields.title && formstyles.inputFieldValid)}
+                                   {...register("title", {required: true, minLength: 1})}
                                    type="text" />
                             <label className={formstyles.inputLabel}>
                                 Name
@@ -63,24 +70,24 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
                         </div>
                         <div className={styles.timeRow}>
                             <div className={formstyles.input}>
-                                <input className={cls(formstyles.inputField, errors.start && formstyles.invalidInputField)}
+                                <input className={cls(formstyles.inputField, errors.start && formstyles.inputFieldInvalid, dirtyFields.start && formstyles.inputFieldValid)}
                                        {...register("start", {required: true, validate: validateTimes})}
                                        type="time" step="900" min="07:00" max="23:00" />
-                                <label className={formstyles.inputLabel}>
+                                <label className={cls(formstyles.inputLabel, styles.timeInput)}>
                                     Startzeit
                                 </label>
                             </div>
                             <div className={formstyles.input}>
-                                <input className={cls(formstyles.inputField, errors.end && formstyles.invalidInputField)}
+                                <input className={cls(formstyles.inputField, errors.end && formstyles.inputFieldInvalid, dirtyFields.end && formstyles.inputFieldValid)}
                                        {...register("end", {required: true, validate: validateTimes})}
                                        type="time" />
-                                <label className={formstyles.inputLabel}>
+                                <label className={cls(formstyles.inputLabel, styles.timeInput)}>
                                     Endzeit
                                 </label>
                             </div>
                         </div>
                         <div className={formstyles.input}>
-                            <select className={cls(formstyles.inputField, errors.weekday && formstyles.invalidInputField)}
+                            <select className={cls(formstyles.inputField, errors.weekday && formstyles.inputFieldInvalid, dirtyFields.weekday && formstyles.inputFieldValid)}
                                     {...register("weekday", {required: true})}>
                                 {weekdayService.AllWeekdays().map(weekday => {
                                     return (

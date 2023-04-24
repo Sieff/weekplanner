@@ -16,8 +16,12 @@ export type ModuleFormData = {
     title: string;
 }
 
+const defaultValues = {
+    title: "",
+}
+
 export const ModuleCreatorModal = ({submitCallback}: ModuleCreatorProps) => {
-    const {register, handleSubmit, formState: { errors } , reset} = useForm();
+    const {register, handleSubmit, formState: { errors, dirtyFields } , reset} = useForm({defaultValues});
     const [show, setShow] = useState(false);
 
     const openModal = () => setShow(true);
@@ -37,7 +41,7 @@ export const ModuleCreatorModal = ({submitCallback}: ModuleCreatorProps) => {
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neues Modul"}>
                     <form className={formstyles.form}>
                         <div className={formstyles.input}>
-                            <input className={cls(formstyles.inputField, errors.title && formstyles.invalidInputField)}
+                            <input className={cls(formstyles.inputField, errors.title && formstyles.inputFieldInvalid, dirtyFields.title && formstyles.inputFieldValid)}
                                    {...register("title", {required: true})} type="text" />
                             <label className={formstyles.inputLabel}>
                                 Name
