@@ -1,10 +1,11 @@
 import {FieldValues, useForm} from "react-hook-form";
 import React, {useState} from "react";
-import formstyles from "../../styles/formstyles.module.scss"
 import {Button} from "../Button";
 import Modal from "./Modal";
-import {cls} from "../../styles/cls";
 import {Info} from "../Info";
+import {CheckBox} from "../form/CheckBox";
+import {TextField} from "../form/TextField";
+import {Form} from "../form/Form";
 
 type AppointmentCreatorProps = {
     /**
@@ -41,28 +42,15 @@ export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) =
             <Button onClick={openModal}>Abschnitt hinzufügen</Button>
             {show && (
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neuer Abschnitt"}>
-                    <form className={formstyles.form}>
-                        <div className={formstyles.input}>
-                            <input className={cls(formstyles.inputField, errors.title && formstyles.inputFieldInvalid, dirtyFields.title && formstyles.inputFieldValid)}
-                                   {...register("title", {required: true})}
-                                   type="text" />
-                            <label className={formstyles.inputLabel}>
-                                Name
-                            </label>
-                        </div>
-                        <div className={formstyles.input}>
-                            <input {...register("optional")} className={cls(formstyles.inpCbx, formstyles.inputField)} id="cbx" type="checkbox" style={{display: "none"}}/>
-                            <label className={cls(formstyles.cbx, formstyles.inputLabel)} htmlFor="cbx">
-                                <span>
-                                    <svg width="12px" height="10px" viewBox="0 0 12 10">
-                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                    </svg>
-                                </span>
-                                <span>Optionale Veranstaltungen?</span>
-                                <Info text="Alle Veranstaltungen unter diesem Abschnitt werden als Optionen für eine Veranstaltung behandelt." />
-                            </label>
-                        </div>
-                    </form>
+                    <Form>
+                        <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title}/>
+                        <CheckBox register={register("optional")}>
+                            <div className="flex items-center content-start gap-s">
+                                Flexible Veranstaltung?
+                                <Info text="Alle Veranstaltungen unter diesem Abschnitt werden als Optionen für eine flexible Veranstaltung behandelt" />
+                            </div>
+                        </CheckBox>
+                    </Form>
                 </Modal>
             )}
         </>

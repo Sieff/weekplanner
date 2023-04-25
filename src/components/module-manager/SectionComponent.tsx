@@ -22,7 +22,7 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
         <div className={styles.section}>
             <div className={styles.header}>
                 <h3>{section.title}</h3>
-                {section.optional && <div className={styles.option}> - optional</div>}
+                {section.optional && <div className={styles.option}> - flexibel</div>}
             </div>
             <div className={styles.appointmentField}>
                 {Object.entries(section.appointments).map(([_, appointment]) => {

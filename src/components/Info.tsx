@@ -8,13 +8,13 @@ type InfoProps = {
 
 export const Info = ({text}: InfoProps) => {
     const [show, setShow] = useState(false);
-    const infoRef = useRef<HTMLSpanElement>(null);
+    const infoRef = useRef<HTMLDivElement>(null);
 
     const rect = infoRef.current?.getBoundingClientRect()!;
 
     return (
-        <span onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} ref={infoRef}>
-            <div className={styles.info}>
+        <div className="inline-block" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} ref={infoRef}>
+            <div className="flex content-center items-center cursor-pointer">
                 <img src="/info_icon.svg" alt="Info Tooltip" className={styles.icon}/>
             </div>
             {show && (
@@ -24,6 +24,6 @@ export const Info = ({text}: InfoProps) => {
                     </div>
                 </Portal>
             )}
-        </span>
+        </div>
     )
 }
