@@ -14,7 +14,7 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
     const dispatch = useDispatch()
 
     const onCreate = (appointmentData: AppointmentFormData) => {
-        const newAppointment = new AppointmentModel(section.id, appointmentData.title, appointmentData.weekday, appointmentData.start, appointmentData.end);
+        const newAppointment = new AppointmentModel(section.id, section.variant, appointmentData.title, appointmentData.weekday, appointmentData.start, appointmentData.end);
         dispatch(addAppointment(newAppointment));
     };
 

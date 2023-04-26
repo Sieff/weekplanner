@@ -2,24 +2,27 @@ import {Weekday} from "./Weekday";
 import {Moment} from "moment/moment";
 import {v4 as uuid} from "uuid";
 import {immerable} from "immer";
+import {ColorVariant} from "./Variant";
 
 export class AppointmentModel {
     [immerable] = true
 
     private _sectionId: string;
+    private _variant: ColorVariant;
     private _id: string;
     private _title: string;
     private _weekday: Weekday;
     private _start: Moment;
     private _end: Moment;
 
-    constructor(sectionId: string, title: string, weekday: Weekday, start: Moment, end: Moment) {
+    constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment) {
         this._id = uuid();
         this._title = title;
         this._weekday = weekday;
         this._start = start;
         this._end = end;
         this._sectionId = sectionId;
+        this._variant = variant;
     }
 
     get id(): string {
@@ -28,6 +31,10 @@ export class AppointmentModel {
 
     get title(): string {
         return this._title;
+    }
+
+    get variant(): ColorVariant {
+        return this._variant;
     }
 
     get weekday(): Weekday {

@@ -4,13 +4,16 @@ import styles from "./ModulesManager.module.scss"
 import {ModuleComponent} from "./ModuleComponent";
 import {ModuleCreatorModal, ModuleFormData} from "../modal/ModuleCreatorModal";
 import {ModuleModel} from "../../models/ModuleModel";
+import {useContext} from "react";
+import {VariantServiceContext} from "../../services/ServiceProvider";
 
 export const ModulesManager = () => {
-    const modules = useSelector(selectModules)
-    const dispatch = useDispatch()
+    const modules = useSelector(selectModules);
+    const variantService = useContext(VariantServiceContext);
+    const dispatch = useDispatch();
 
     const onCreate = (moduleFormData: ModuleFormData) => {
-        const newModule = new ModuleModel(moduleFormData.title);
+        const newModule = new ModuleModel(moduleFormData.title, variantService.GenerateVariant());
         dispatch(addModule(newModule));
     };
 

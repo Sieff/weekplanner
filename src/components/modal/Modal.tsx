@@ -1,7 +1,8 @@
 import React, {useEffect, useRef} from "react";
 import styles from "./Modal.module.scss";
 import {Portal} from "../Portal";
-import {Button, ButtonVariant} from "../Button";
+import {Button} from "../Button";
+import {ButtonVariant} from "../../models/Variant";
 
 type ModalProps = React.PropsWithChildren<{
     onClose: () => void;

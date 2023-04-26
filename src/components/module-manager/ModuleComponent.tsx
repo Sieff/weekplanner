@@ -1,4 +1,3 @@
-import styles from "./ModuleComponent.module.scss";
 import {ModuleModel} from "../../models/ModuleModel";
 import {SectionComponent} from "./SectionComponent";
 import {useDispatch} from "react-redux";
@@ -10,15 +9,15 @@ type ModuleEditorProps = {
     module: ModuleModel;
 }
 export const ModuleComponent = ({module}: ModuleEditorProps) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const onCreate = (sectionFormData: SectionFormData) => {
-        const newSection = new SectionModel(module.id, sectionFormData.title, sectionFormData.optional);
+        const newSection = new SectionModel(module.id, sectionFormData.title, sectionFormData.optional, module.variant);
         dispatch(addSection(newSection));
     };
 
     return (
-        <div className={styles.container}>
+        <div className={"p-l max-w-sm flex flex-col gap-m rounded-rl border-2 border-" + module.variant}>
             <h2>{module.title}</h2>
             {Object.entries(module.sections).map(([id, section]) =>
                 <SectionComponent section={section} key={id} />)}

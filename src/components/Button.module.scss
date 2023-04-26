@@ -1,43 +1,68 @@
 .button {
-  padding: var(--pad-m);
-  border-radius: var(--border-radius-s);
-  border: none;
-  cursor: pointer;
-
   background: linear-gradient(#0000, rgb(0 0 0/40%)) top/100% 800%;
-  transition: 0.3s;
-}
-
-.button:hover {
-  background-position: bottom;
 }
 
 .inactive {
-  color: white;
   background-color: var(--color-inactive);
   box-shadow: 0 6px 18px -5px var(--color-inactive);
 }
 
 .secondary {
-  color: white;
   background-color: var(--color-secondary);
   box-shadow: 0 6px 18px -5px var(--color-secondary);
 }
 
 .primary {
-  color: white;
   background-color: var(--color-primary);
   box-shadow: 0 6px 18px -5px var(--color-primary);
 }
 
 .danger {
-  color: white;
   background-color: var(--color-danger);
   box-shadow: 0 6px 18px -5px var(--color-danger);
 }
 
 .accept {
-  color: white;
   background-color: var(--color-accept);
   box-shadow: 0 6px 18px -5px var(--color-accept);
+}
+
+.variant0 {
+  background-color: var(--color-variant0);
+  box-shadow: 0 6px 18px -5px var(--color-variant0);
+}
+
+.variant1 {
+  background-color: var(--color-variant1);
+  box-shadow: 0 6px 18px -5px var(--color-variant1);
+}
+
+.variant2 {
+  background-color: var(--color-variant2);
+  box-shadow: 0 6px 18px -5px var(--color-variant2);
+}
+
+.variant3 {
+  background-color: var(--color-variant3);
+  box-shadow: 0 6px 18px -5px var(--color-variant3);
+}
+
+.variant4 {
+  background-color: var(--color-variant4);
+  box-shadow: 0 6px 18px -5px var(--color-variant4);
+}
+
+.variant5 {
+  background-color: var(--color-variant5);
+  box-shadow: 0 6px 18px -5px var(--color-variant5);
+}
+
+.variant6 {
+  background-color: var(--color-variant6);
+  box-shadow: 0 6px 18px -5px var(--color-variant6);
+}
+
+.variant7 {
+  background-color: var(--color-variant7);
+  box-shadow: 0 6px 18px -5px var(--color-variant7);
 }
