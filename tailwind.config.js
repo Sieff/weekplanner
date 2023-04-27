@@ -19,6 +19,13 @@ module.exports = {
         'inactive': '#575757FF',
         'divider': '#d5d5d5',
 
+        'primary-dark': '#087e7b',
+        'secondary-dark': '#32adaa',
+        'danger-dark': '#b4251b',
+        'accept-dark': '#499f13',
+        'inactive-dark': '#414141',
+        'divider-dark': '#a9a9a9',
+
         red: {
           550: '#F42E32'
         },

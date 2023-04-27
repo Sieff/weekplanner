@@ -1,7 +1,6 @@
 import React from "react";
 import {ButtonVariant, ColorVariant} from "../models/Variant";
 import {cls} from "../styles/cls";
-import styles from "./Button.module.scss";
 
 type ButtonProps = React.PropsWithChildren<{
     onClick: () => void;
@@ -18,11 +17,11 @@ const ButtonStyleMap: {[key in ButtonVariant | ColorVariant]: string} = {
     [ColorVariant.purple]: "bg-purple-500 shadow-purple-500 hover:bg-purple-600",
     [ColorVariant.pink]: "bg-pink-500 shadow-pink-500 hover:bg-pink-600",
 
-    [ButtonVariant.inactive]: styles.inactive,
-    [ButtonVariant.primary]: styles.primary,
-    [ButtonVariant.secondary]: styles.secondary,
-    [ButtonVariant.danger]: styles.danger,
-    [ButtonVariant.accept]: styles.accept
+    [ButtonVariant.inactive]: "bg-inactive shadow-inactive hover:bg-inactive-dark",
+    [ButtonVariant.primary]: "bg-primary shadow-primary hover:bg-primary-dark",
+    [ButtonVariant.secondary]: "bg-secondary shadow-secondary hover:bg-secondary-dark",
+    [ButtonVariant.danger]: "bg-danger shadow-danger hover:bg-danger-dark",
+    [ButtonVariant.accept]: "bg-accept shadow-accept hover:bg-accept-dark"
 }
 
 export const Button = ({onClick, variant = ButtonVariant.primary, children}: ButtonProps) => {
