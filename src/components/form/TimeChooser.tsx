@@ -10,8 +10,6 @@ type TimeChooserProps = {
 }
 
 export const TimeChooser = ({register, caption, dirty, error}: TimeChooserProps) => {
-    console.log(caption, error && true);
-
     return (
         <div className="flex flex-col-reverse relative w-full pt-6 mb-6">
             <input className={cls("peer z-10 bg-transparent border-b-2 py-1 text-lg outline-0 focus:border-inactive",

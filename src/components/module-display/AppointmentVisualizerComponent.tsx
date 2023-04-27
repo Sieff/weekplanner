@@ -1,11 +1,11 @@
 import {AppointmentModel} from "../../models/AppointmentModel";
 import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
+import {TimeTableCoordinates} from "./TimetableColumn";
 
 type AppointmentVisualizerComponentProps = {
     appointment: AppointmentModel;
-    start: number;
-    end: number;
+    coordinate: TimeTableCoordinates;
 }
 
 const StyleMap: {[key in ColorVariant]: string} = {
@@ -19,10 +19,10 @@ const StyleMap: {[key in ColorVariant]: string} = {
     [ColorVariant.pink]: "border-pink-500",
 }
 
-export const AppointmentVisualizerComponent = ({appointment, start, end}: AppointmentVisualizerComponentProps) => {
+export const AppointmentVisualizerComponent = ({appointment, coordinate}: AppointmentVisualizerComponentProps) => {
     return (
         <div className={cls("bg-white rounded-rm flex justify-center items-center flex-col overflow-y-hidden border-2",
-            StyleMap[appointment.variant])} style={{gridRowStart: start, gridRowEnd: end}}>
+            StyleMap[appointment.variant])} style={{gridRowStart: coordinate.yStart, gridRowEnd: coordinate.yEnd, gridColumnStart: coordinate.xStart, gridColumnEnd: coordinate.xEnd}}>
             <h3>{appointment.title}</h3>
         </div>
     )

@@ -2,6 +2,8 @@ import {Moment} from "moment";
 import moment from "moment/moment";
 import {TimeUnitModel} from "../models/TimeUnitModel";
 import {AppointmentModel} from "../models/AppointmentModel";
+import {AppointmentGraphModel} from "../models/AppointmentGraphModel";
+import {TimeTableCoordinates} from "../components/module-display/TimetableColumn";
 
 export class TimeService {
     private _timetableStart: Moment = moment("08:00", 'HH:mm').utc(true);
@@ -53,7 +55,7 @@ export class TimeService {
 
     public GetTimeUnitId(time: Moment): number {
         if (time < this._timetableStart) return 1;
-        if (time >= this._timetableEnd) return this._units.length + 1;
+        if (time >= this._timetableEnd) return this._units.length;
 
         let current: number = 1;
         this._units.forEach((unit, idx) => {
@@ -77,5 +79,17 @@ export class TimeService {
         });
 
         return Array.from(Array(this._units.length).keys()).map((number) => number + 1).filter((number) => filledSlots.indexOf(number) === -1);
+    }
+
+    public GenerateCoordinates(appointments: {[key: string]: AppointmentModel }): [{[key: string]: TimeTableCoordinates}, number] {
+        const appointmentGraph = new AppointmentGraphModel(appointments);
+        //TODO: Clique problem
+        const coordinates: {[key: string]: TimeTableCoordinates} = {}
+        Object.entries(appointments).forEach(([key, appointment]) => {
+            const start = this.GetTimeUnitId(appointment.start);
+            const end = this.GetTimeUnitId(appointment.end);
+            coordinates[key] = {yStart: start, yEnd: end, xStart: 1, xEnd: 1};
+        })
+        return [coordinates, appointmentGraph.MaxClique()];
     }
 }
