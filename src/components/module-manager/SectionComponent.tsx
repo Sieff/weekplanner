@@ -31,7 +31,7 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
                     )}
                 )}
             </div>
-            <AppointmentCreatorModal submitCallback={onCreate} />
+            <AppointmentCreatorModal submitCallback={onCreate} variant={section.variant} />
             <div className={styles.divider}></div>
         </div>
     )

@@ -19,14 +19,10 @@ module.exports = {
         'inactive': '#575757FF',
         'divider': '#d5d5d5',
 
-        'variant0': '#F42E32',
-        'variant1': '#F29532',
-        'variant2': '#E7D518',
-        'variant3': '#18E76D',
-        'variant4': '#2EF4F0',
-        'variant5': '#196dda',
-        'variant6': '#8D2EF4',
-        'variant7': '#E71892',
+        red: {
+          550: '#F42E32'
+        },
+
       },
       transitionDuration: {
         '250': '250ms',
@@ -44,8 +40,8 @@ module.exports = {
         'rm': '10px',
         'rl': '20px',
       },
-      backgroundImage: {
-        'buttonGradient': 'linear-gradient(#0000, rgb(0 0 0/40%)) top/100% 800%',
+      boxShadow: {
+        'button': '0 6px 18px -5px',
       },
       backgroundColor: {
         'primary': '#089E9B',

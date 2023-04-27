@@ -9,12 +9,14 @@ import {TextField} from "../form/TextField";
 import {DropDown} from "../form/DropDown";
 import {TimeChooser} from "../form/TimeChooser";
 import {Form} from "../form/Form";
+import {ColorVariant} from "../../models/Variant";
 
 type AppointmentCreatorProps = {
     /**
      * Callback that is called with the created appointment
      */
     submitCallback: (appointment: AppointmentFormData) => void;
+    variant: ColorVariant;
 };
 
 export type AppointmentFormData = {
@@ -31,7 +33,7 @@ const defaultValues = {
     weekday: ""
 }
 
-export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
+export const AppointmentCreatorModal = ({submitCallback, variant}: AppointmentCreatorProps) => {
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
@@ -78,7 +80,7 @@ export const AppointmentCreatorModal = ({submitCallback}: AppointmentCreatorProp
 
     return (
         <>
-            <Button onClick={openModal}>Veranstaltung hinzufügen</Button>
+            <Button onClick={openModal} variant={variant}>Veranstaltung hinzufügen</Button>
             {show && (
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neue Veranstaltung"}>
                     <Form>

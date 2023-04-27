@@ -6,12 +6,14 @@ import {Info} from "../Info";
 import {CheckBox} from "../form/CheckBox";
 import {TextField} from "../form/TextField";
 import {Form} from "../form/Form";
+import {ColorVariant} from "../../models/Variant";
 
 type AppointmentCreatorProps = {
     /**
      * Callback that is called with the created appointment
      */
     submitCallback: (sectionFormData: SectionFormData) => void;
+    variant?: ColorVariant;
 };
 
 export type SectionFormData = {
@@ -24,7 +26,7 @@ const defaultValues = {
     optional: false
 }
 
-export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) => {
+export const SectionCreatorModal = ({submitCallback, variant}: AppointmentCreatorProps) => {
     const {register, handleSubmit, formState: { errors, dirtyFields }, reset} = useForm({defaultValues});
     const [show, setShow] = useState(false);
 
@@ -39,7 +41,7 @@ export const SectionCreatorModal = ({submitCallback}: AppointmentCreatorProps) =
 
     return (
         <>
-            <Button onClick={openModal}>Abschnitt hinzufügen</Button>
+            <Button onClick={openModal} variant={variant}>Abschnitt hinzufügen</Button>
             {show && (
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neuer Abschnitt"}>
                     <Form>
