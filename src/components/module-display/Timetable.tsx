@@ -1,7 +1,6 @@
 import {useSelector} from "react-redux";
 import {selectAppointments} from "../../state/ModulesStateSlice";
 import {TimetableColumn} from "./TimetableColumn";
-import styles from "./Timetable.module.scss";
 import {HourColumn} from "./HourColumn";
 import {useContext} from "react";
 import {WeekdayServiceContext} from "../../services/ServiceProvider";
@@ -12,7 +11,7 @@ export const Timetable = () => {
     const appointmentsDict = useSelector(selectAppointments);
 
     return (
-        <div className={styles.timetable}>
+        <div className={"flex flex-row mx-l"}>
             <HourColumn />
             {weekdayService.AllWeekdays().map((weekday) => {
                 return <TimetableColumn weekday={weekday}

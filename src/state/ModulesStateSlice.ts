@@ -5,7 +5,7 @@ import {SectionModel} from "../models/SectionModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 
 // Define the initial state using that type
-const initialState: ModuleState = { modules: {}, sections: {}, appointments: {} };
+const initialState: ModuleState = { modules: {}, sections: {}, appointments: {}, activeAppointments: {} };
 
 export const ModuleStateSlice = createSlice({
     name: 'modules',
@@ -30,28 +30,35 @@ export const ModuleStateSlice = createSlice({
             state.modules[section.moduleId].sections[section.id].appointments[action.payload.id] = action.payload;
             section.appointments[action.payload.id] = action.payload;
             state.appointments[action.payload.id] = action.payload;
+            state.activeAppointments[action.payload.id] = true;
         },
         removeAppointment: (state, action: PayloadAction<AppointmentModel>) => {
             const section = state.sections[action.payload.sectionId];
             delete state.modules[section.moduleId].sections[section.id].appointments[action.payload.id]
             delete state.sections[action.payload.sectionId].appointments[action.payload.id];
             delete state.appointments[action.payload.id];
+            delete state.activeAppointments[action.payload.id];
         },
+        updateActiveAppointments: (state, action: PayloadAction<{[key: string]: boolean}>) => {
+            state.activeAppointments = Object.assign({}, state.activeAppointments, action.payload);
+        }
     },
 })
 
-type ModuleState = {
+export type ModuleState = {
     modules: { [key: string]: ModuleModel };
     sections: { [key: string]: SectionModel };
     appointments: { [key: string]: AppointmentModel };
+    activeAppointments: { [key: string]: boolean };
 }
 
 // Action creators are generated for each case reducer function
-export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment } = ModuleStateSlice.actions
+export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateActiveAppointments } = ModuleStateSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectModules = (state: RootState) => state.modules.modules;
 export const selectSections = (state: RootState) => state.modules.sections;
 export const selectAppointments = (state: RootState) => state.modules.appointments;
+export const selectAppointmentActive = (state: RootState, appointmentId: string) => state.modules.activeAppointments[appointmentId];
 
 export default ModuleStateSlice.reducer

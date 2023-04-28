@@ -25,6 +25,10 @@ export class AppointmentModel {
         this._variant = variant;
     }
 
+    public CollidesWith(other: AppointmentModel): boolean {
+        return other.end > this.start && this.end > other.start
+    }
+
     get id(): string {
         return this._id;
     }

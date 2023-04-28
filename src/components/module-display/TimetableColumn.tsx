@@ -21,16 +21,14 @@ export const TimetableColumn = ({weekday, appointments}: TimetableColumnProps) =
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const emptySlots = timeService.GetEmptySlots(Object.values(appointments));
     const [coordinates, gridWidth] = timeService.GenerateCoordinates(appointments);
-    console.log(gridWidth);
 
     return (
         <div className={styles.container}>
             <h2 className={styles.header}>{weekdayService.GetLabel(weekday)}</h2>
             <div className={styles.swimlane} style={{gridTemplateRows: "repeat(" + timeService.units.length + ", 7px)", gridTemplateColumns: "repeat(" + gridWidth + ", 1fr)"}}>
-                {emptySlots.map((idx) =>
-                    <div className={styles.unit} key={idx} style={{gridRow: idx}}></div>)}
+                {timeService.units.map((_, idx) =>
+                    <div className={styles.unit} key={idx} style={{gridRow: idx+1, gridColumn: "1 / " + (gridWidth+1)}}></div>)}
                 {Object.entries(coordinates).map(([key, coordinate], idx) => {
                     return (
                         <AppointmentVisualizerComponent key={idx}

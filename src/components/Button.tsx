@@ -8,7 +8,7 @@ type ButtonProps = React.PropsWithChildren<{
 }>
 
 const ButtonStyleMap: {[key in ButtonVariant | ColorVariant]: string} = {
-    [ColorVariant.red]: "bg-red-550 shadow-red-550 hover:bg-red-550",
+    [ColorVariant.red]: "bg-red-550 shadow-red-550 hover:bg-red-600",
     [ColorVariant.orange]: "bg-orange-400 shadow-orange-400 hover:bg-orange-600",
     [ColorVariant.yellow]: "bg-yellow-500 shadow-yellow-500 hover:bg-yellow-600",
     [ColorVariant.green]: "bg-green-500 shadow-green-500 hover:bg-green-600",
