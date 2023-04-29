@@ -49,6 +49,7 @@ module.exports = {
       },
       boxShadow: {
         'button': '0 6px 18px -5px',
+        'box': 'rgba(0, 0, 0, 0.35) 0 5px 15px'
       },
       backgroundColor: {
         'primary': '#089E9B',
