@@ -45,12 +45,13 @@ export const ModuleStateSlice = createSlice({
             appointmentsAdapter.removeOne(state.appointments as EntityState<AppointmentModel>, action.payload.id);
         },
         updateAppointmentsActive: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
-            Object.entries(action.payload).forEach(([key, active]) => {
+            const newEntries = Object.entries(action.payload).map(([key, active]) => {
                 const appointment = state.appointments.entities[key]!;
                 appointment.active = active;
-                appointmentsAdapter.setOne(state.appointments as EntityState<AppointmentModel>, appointment as AppointmentModel);
+                return [key, appointment as AppointmentModel];
             });
-        }
+            appointmentsAdapter.setMany(state.appointments as EntityState<AppointmentModel>, Object.fromEntries(newEntries));
+        },
     },
 });
 
