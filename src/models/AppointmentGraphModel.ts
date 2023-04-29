@@ -25,12 +25,14 @@ export class AppointmentGraphModel {
         return edges;
     }
 
-    public GetExcludedAppointments() {
-        const mergedSets = Object.values(this._exclusionEdges).reduce((previous, current) => {
-            return new Set([...Object.values(previous), ...Object.values(current)]);
-        }, new Set<string>());
-
-        return Object.values(mergedSets);
+    public GetExcludedAppointments(): string[] {
+        const excludedAppointments = [] as string[];
+        for (const exclusionSet of Object.values(this._exclusionEdges)) {
+            exclusionSet.forEach((appointments) => {
+                excludedAppointments.push(appointments);
+            });
+        }
+        return excludedAppointments;
     }
 
     public GetNonConflictingCandidates(candidates: AppointmentModel[][]): AppointmentModel[] {

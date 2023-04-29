@@ -138,12 +138,15 @@ export class TimeService {
 
         const appointmentGraph = new AppointmentGraphModel(fixedAppointments, flexibleAppointments);
         const excluded = appointmentGraph.GetExcludedAppointments();
+        console.log(excluded);
         const candidates = Object.values(flexibleAppointments).filter((appointment) => {
             return !excluded.some((excludedId) => excludedId === appointment.id);
         });
+        console.log(candidates);
         const sectionedCandidates = flexibleSections.map((section) => {
             return candidates.filter((candidate) => candidate.sectionId === section.id)
         });
+        console.log(sectionedCandidates);
 
         const choosenOptions = appointmentGraph.GetNonConflictingCandidates(sectionedCandidates);
 
