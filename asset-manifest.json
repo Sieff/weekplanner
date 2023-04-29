@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/weekplanner/static/css/main.fd871067.css",
-    "main.js": "/weekplanner/static/js/main.202c0f91.js",
+    "main.css": "/weekplanner/static/css/main.081830bd.css",
+    "main.js": "/weekplanner/static/js/main.16c75f1f.js",
     "static/js/787.83a795ea.chunk.js": "/weekplanner/static/js/787.83a795ea.chunk.js",
+    "static/media/info_icon.svg": "/weekplanner/static/media/info_icon.ed97f4a837f54c9f13d8bf6eb81c5704.svg",
     "index.html": "/weekplanner/index.html",
-    "main.fd871067.css.map": "/weekplanner/static/css/main.fd871067.css.map",
-    "main.202c0f91.js.map": "/weekplanner/static/js/main.202c0f91.js.map",
+    "main.081830bd.css.map": "/weekplanner/static/css/main.081830bd.css.map",
+    "main.16c75f1f.js.map": "/weekplanner/static/js/main.16c75f1f.js.map",
     "787.83a795ea.chunk.js.map": "/weekplanner/static/js/787.83a795ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fd871067.css",
-    "static/js/main.202c0f91.js"
+    "static/css/main.081830bd.css",
+    "static/js/main.16c75f1f.js"
   ]
 }
