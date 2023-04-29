@@ -1,7 +1,7 @@
 import {ModuleModel} from "../../models/ModuleModel";
 import {SectionComponent} from "./SectionComponent";
-import {useDispatch} from "react-redux";
-import {addSection} from "../../state/ModulesStateSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {addSection, selectSectionsByModule} from "../../state/ModulesStateSlice";
 import {SectionCreatorModal, SectionFormData} from "../modal/SectionCreatorModal";
 import {SectionModel} from "../../models/SectionModel";
 import {ColorVariant} from "../../models/Variant";
@@ -24,6 +24,7 @@ const StyleMap: {[key in ColorVariant]: string} = {
 
 export const ModuleComponent = ({module}: ModuleEditorProps) => {
     const dispatch = useDispatch();
+    const sections = useSelector((state) => selectSectionsByModule(state, module.id));
 
     const onCreate = (sectionFormData: SectionFormData) => {
         const newSection = new SectionModel(module.id, sectionFormData.title, sectionFormData.optional, module.variant);
@@ -34,8 +35,8 @@ export const ModuleComponent = ({module}: ModuleEditorProps) => {
         <div className={cls("p-l max-w-sm flex flex-col gap-m rounded-rl border-2",
             StyleMap[module.variant])}>
             <h2>{module.title}</h2>
-            {Object.entries(module.sections).map(([id, section]) =>
-                <SectionComponent section={section} key={id} />)}
+            {sections.map((section) =>
+                <SectionComponent section={section} key={section.id} />)}
             <SectionCreatorModal submitCallback={onCreate} variant={module.variant} />
         </div>
     )

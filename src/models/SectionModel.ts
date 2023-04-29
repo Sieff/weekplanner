@@ -1,6 +1,5 @@
 import { v4 as uuid } from "uuid";
-import {immerable} from "immer"
-import {AppointmentModel} from "./AppointmentModel";
+import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
 
 export class SectionModel {
@@ -10,7 +9,6 @@ export class SectionModel {
     private _id: string;
     private _variant: ColorVariant;
     private _title: string;
-    private _appointments: { [key: string]: AppointmentModel } = {};
     private _optional: boolean;
 
     constructor(moduleId: string, title: string, optional: boolean, variant: ColorVariant) {
@@ -31,10 +29,6 @@ export class SectionModel {
 
     get variant(): ColorVariant {
         return this._variant;
-    }
-
-    get appointments(): { [key: string]: AppointmentModel } {
-        return this._appointments;
     }
 
     get moduleId(): string {

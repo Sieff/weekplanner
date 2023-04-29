@@ -8,14 +8,14 @@ import {WeekdayServiceContext} from "../../services/ServiceProvider";
 export const Timetable = () => {
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const appointmentsDict = useSelector(selectAppointments);
+    const appointments = useSelector(selectAppointments);
 
     return (
         <div className={"flex flex-row mx-l"}>
             <HourColumn />
             {weekdayService.AllWeekdays().map((weekday) => {
                 return <TimetableColumn weekday={weekday}
-                                        appointments={Object.fromEntries(Object.entries(appointmentsDict).filter(([_, appointment]) => appointment.weekday === weekday))}
+                                        appointments={appointments.filter((appointment) => appointment.weekday === weekday)}
                                         key={weekday} />
             })}
         </div>

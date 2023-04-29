@@ -4,12 +4,14 @@ import styles from "./ModulesManager.module.scss"
 import {ModuleComponent} from "./ModuleComponent";
 
 export const ModulesManager = () => {
+    console.log("moin1");
     const modules = useSelector(selectModules);
 
+    console.log("moin2", modules);
     return (
         <div className={styles.container}>
-            {Object.entries(modules).map(([id, module]) => {
-                return (<ModuleComponent module={module} key={id}/>)
+            {modules.map((module) => {
+                return (<ModuleComponent module={module} key={module.id}/>)
             })}
         </div>
     )

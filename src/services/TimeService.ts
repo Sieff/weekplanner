@@ -92,20 +92,19 @@ export class TimeService {
         return !hasCollision;
     }
 
-    public GenerateCoordinates(appointments: {[key: string]: AppointmentModel }): [{[key: string]: TimeTableCoordinates}, number] {
+    public GenerateCoordinates(appointments: AppointmentModel[]): [{[key: string]: TimeTableCoordinates}, number] {
         const lanes: AppointmentModel[][] = [[]];
-        const appointmentsArray = Object.values(appointments);
-        for (let i = 0; i < appointmentsArray.length; i++) {
+        for (let i = 0; i < appointments.length; i++) {
             let appointmentAssigned = false;
             for (let j = 0; j < lanes.length; j++) {
-                if (this.IsLaneFree(lanes[j], appointmentsArray[i])) {
-                    lanes[j].push(appointmentsArray[i]);
+                if (this.IsLaneFree(lanes[j], appointments[i])) {
+                    lanes[j].push(appointments[i]);
                     appointmentAssigned = true;
                     break;
                 }
             }
             if (!appointmentAssigned) {
-                lanes.push([appointmentsArray[i]]);
+                lanes.push([appointments[i]]);
             }
         }
 
@@ -124,12 +123,6 @@ export class TimeService {
     public GenerateSchedule(sections: { [p: string]: SectionModel }): {[key: string]: boolean} {
         const schedule: {[key: string]: boolean} = {};
         //TODO: Actual algorithm;
-
-        Object.entries(sections).forEach(([key, section]) => {
-            Object.values(section.appointments).forEach((appointment) => {
-                schedule[appointment.id] = false;
-            });
-        });
 
         return schedule;
     }

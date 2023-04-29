@@ -1,8 +1,8 @@
 import styles from "./SectionComponent.module.scss";
 import {AppointmentCreatorModal, AppointmentFormData} from "../modal/AppointmentCreatorModal";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {SectionModel} from "../../models/SectionModel";
-import {addAppointment} from "../../state/ModulesStateSlice";
+import {addAppointment, selectAppointmentsBySection} from "../../state/ModulesStateSlice";
 import {AppointmentComponent} from "./AppointmentComponent";
 import {AppointmentModel} from "../../models/AppointmentModel";
 
@@ -12,6 +12,7 @@ type SectionComponentProps = {
 
 export const SectionComponent = ({section}: SectionComponentProps) => {
     const dispatch = useDispatch()
+    const appointments = useSelector((state) => selectAppointmentsBySection(state, section.id));
 
     const onCreate = (appointmentData: AppointmentFormData) => {
         const newAppointment = new AppointmentModel(section.id, section.variant, appointmentData.title, appointmentData.weekday, appointmentData.start, appointmentData.end);
@@ -25,9 +26,9 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
                 {section.optional && <div className={styles.option}> - flexibel</div>}
             </div>
             <div className={styles.appointmentField}>
-                {Object.entries(section.appointments).map(([_, appointment]) => {
+                {appointments.map((appointment) => {
                     return (
-                        <AppointmentComponent appointment={appointment} />
+                        <AppointmentComponent appointment={appointment} key={appointment.id} />
                     )}
                 )}
             </div>

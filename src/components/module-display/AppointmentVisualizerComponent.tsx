@@ -3,9 +3,6 @@ import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
 import {TimeTableCoordinates} from "./TimetableColumn";
 import {useState} from "react";
-import {useSelector} from "react-redux";
-import {selectAppointmentActive} from "../../state/ModulesStateSlice";
-import {RootState} from "../../store";
 
 type AppointmentVisualizerComponentProps = {
     appointment: AppointmentModel;
@@ -24,8 +21,7 @@ const StyleMap: {[key in ColorVariant]: string} = {
 }
 
 export const AppointmentVisualizerComponent = ({appointment, coordinate}: AppointmentVisualizerComponentProps) => {
-    const appointmentActive = useSelector((state: RootState) => selectAppointmentActive(state, appointment.id));
-    const [active, setActive] = useState(appointmentActive);
+    const [active, setActive] = useState(appointment.active);
 
     const toggleActive = () => {
         setActive(!active);

@@ -7,7 +7,7 @@ import {TimeServiceContext, WeekdayServiceContext} from "../../services/ServiceP
 
 type TimetableColumnProps = {
     weekday: Weekday;
-    appointments: {[key: string]: AppointmentModel };
+    appointments: AppointmentModel[];
 }
 
 export type TimeTableCoordinates = {
@@ -29,11 +29,11 @@ export const TimetableColumn = ({weekday, appointments}: TimetableColumnProps) =
             <div className={styles.swimlane} style={{gridTemplateRows: "repeat(" + timeService.units.length + ", 7px)", gridTemplateColumns: "repeat(" + gridWidth + ", 1fr)"}}>
                 {timeService.units.map((_, idx) =>
                     <div className={styles.unit} key={idx} style={{gridRow: idx+1, gridColumn: "1 / " + (gridWidth+1)}}></div>)}
-                {Object.entries(coordinates).map(([key, coordinate], idx) => {
+                {appointments.map((appointment, idx) => {
                     return (
                         <AppointmentVisualizerComponent key={idx}
-                                                        appointment={appointments[key]}
-                                                        coordinate={coordinate} />
+                                                        appointment={appointment}
+                                                        coordinate={coordinates[appointment.id]} />
                     )
                 })}
             </div>

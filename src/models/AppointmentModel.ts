@@ -5,7 +5,7 @@ import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
 
 export class AppointmentModel {
-    [immerable] = true
+    [immerable] = true;
 
     private _sectionId: string;
     private _variant: ColorVariant;
@@ -14,6 +14,7 @@ export class AppointmentModel {
     private _weekday: Weekday;
     private _start: Moment;
     private _end: Moment;
+    private _active: boolean = true;
 
     constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment) {
         this._id = uuid();
@@ -55,5 +56,13 @@ export class AppointmentModel {
 
     get sectionId(): string {
         return this._sectionId;
+    }
+
+    get active(): boolean {
+        return this._active;
+    }
+
+    set active(value: boolean) {
+        this._active = value;
     }
 }
