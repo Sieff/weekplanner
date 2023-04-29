@@ -4,6 +4,7 @@ import {TimeUnitModel} from "../models/TimeUnitModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 import {TimeTableCoordinates} from "../components/module-display/TimetableColumn";
 import {SectionModel} from "../models/SectionModel";
+import {AppointmentGraphModel} from "../models/AppointmentGraphModel";
 
 export class TimeService {
     private _timetableStart: Moment = moment("08:00", 'HH:mm').utc(true);
@@ -121,9 +122,38 @@ export class TimeService {
     }
 
     public GenerateSchedule(sections: SectionModel[], appointments: AppointmentModel[]): {[key: string]: boolean} {
-        return Object.fromEntries(appointments.map((appointment) => {
-            return [appointment.id, false]
+        const sectionLookup = Object.fromEntries(sections.map((section) => {
+            return [section.id, section];
         }));
-        //TODO: Actual algorithm;
+
+        const flexibleSections = sections.filter((section) => section.optional);
+
+        const fixedAppointments = Object.fromEntries(appointments
+            .filter((appointment) => !sectionLookup[appointment.sectionId].optional)
+            .map((appointment) => [appointment.id, appointment]));
+
+        const flexibleAppointments = Object.fromEntries(appointments
+            .filter((appointment) => sectionLookup[appointment.sectionId].optional)
+            .map((appointment) => [appointment.id, appointment]));
+
+        const appointmentGraph = new AppointmentGraphModel(fixedAppointments, flexibleAppointments);
+        const excluded = appointmentGraph.GetExcludedAppointments();
+        const candidates = Object.values(flexibleAppointments).filter((appointment) => {
+            return !excluded.some((excludedId) => excludedId === appointment.id);
+        });
+        const sectionedCandidates = flexibleSections.map((section) => {
+            return candidates.filter((candidate) => candidate.sectionId === section.id)
+        });
+
+        const choosenOptions = appointmentGraph.GetNonConflictingCandidates(sectionedCandidates);
+
+        return this.CombineAppointments(fixedAppointments, flexibleAppointments, choosenOptions);
+    }
+
+    private CombineAppointments(fixedAppointments: { [p: string]: AppointmentModel }, flexibleAppointments: { [p: string]: AppointmentModel }, choosenOptions: AppointmentModel[]) {
+        const fixed = Object.fromEntries(Object.keys(fixedAppointments).map(key => [key, true]));
+        const flexible = Object.fromEntries(Object.keys(flexibleAppointments).map(key => [key, false]));
+        const chosenFlexible = Object.fromEntries(choosenOptions.map(appointment => [appointment.id, true]));
+        return Object.assign({}, fixed, flexible, chosenFlexible);
     }
 }
