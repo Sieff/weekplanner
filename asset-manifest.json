@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/weekplanner/static/css/main.fd871067.css",
+    "main.js": "/weekplanner/static/js/main.202c0f91.js",
+    "static/js/787.83a795ea.chunk.js": "/weekplanner/static/js/787.83a795ea.chunk.js",
+    "index.html": "/weekplanner/index.html",
+    "main.fd871067.css.map": "/weekplanner/static/css/main.fd871067.css.map",
+    "main.202c0f91.js.map": "/weekplanner/static/js/main.202c0f91.js.map",
+    "787.83a795ea.chunk.js.map": "/weekplanner/static/js/787.83a795ea.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fd871067.css",
+    "static/js/main.202c0f91.js"
+  ]
+}
