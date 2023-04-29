@@ -35,46 +35,6 @@ export class AppointmentGraphModel {
         return excludedAppointments;
     }
 
-    public GetNonConflictingCandidates(candidates: AppointmentModel[][]): AppointmentModel[] {
-        const indices = candidates.map(() => 0);
-        const stop = candidates.map((section) => section.length - 1);
-        do {
-            const combinationWorks = this.CheckCombination(candidates.map((section, idx) => {
-                return section[indices[idx]]
-            }));
-            if (combinationWorks) {
-                return candidates.map((section, idx) => section[indices[idx]]);
-            }
-        } while (this.NextIndices(indices, stop))
-        return [];
-    }
-
-    private CheckCombination(candidates: AppointmentModel[]): boolean {
-        let combinationWorks = true;
-        candidates.forEach((candidate1, idx1) => {
-            candidates.forEach((candidate2, idx2) => {
-                if (idx1 === idx2) return;
-                if (this._conflictEdges[candidate1.id].has(candidate2.id)) {
-                    combinationWorks = false;
-                }
-            });
-        });
-        return combinationWorks;
-    }
-
-    private NextIndices(indices: number[], stop: number[]): boolean {
-        let generatedNext = false;
-        for (let i = 0; i < indices.length; i++) {
-            if (indices[i] < stop[i]) {
-                indices[i]++;
-                generatedNext = true;
-                break;
-            }
-            indices[i] = 0;
-        }
-        return generatedNext;
-    }
-
     get exclusionEdges(): { [key: string]: Set<string> } {
         return this._exclusionEdges;
     }
