@@ -1,6 +1,6 @@
-import styles from "./Info.module.scss"
 import {useRef, useState} from "react";
 import {Portal} from "./Portal";
+import info from '../assets/info_icon.svg';
 
 type InfoProps = {
     text: string;
@@ -15,11 +15,11 @@ export const Info = ({text}: InfoProps) => {
     return (
         <div className="inline-block" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)} ref={infoRef}>
             <div className="flex content-center items-center cursor-pointer">
-                <img src="/info_icon.svg" alt="Info Tooltip" className={styles.icon}/>
+                <img src={info} alt="Info Tooltip" className={"h-6 w-6"}/>
             </div>
             {show && (
                 <Portal>
-                    <div className={styles.toolTip} style={{top: rect.top, left: rect.left + rect.width / 2}}>
+                    <div className={"fixed bg-inactive text-white rounded-rs p-s z-50 max-w-xs translate-x-center translate-y-above"} style={{top: rect.top, left: rect.left + rect.width / 2}}>
                         {text}
                     </div>
                 </Portal>
