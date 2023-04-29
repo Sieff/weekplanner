@@ -2,7 +2,8 @@ import {AppointmentModel} from "../../models/AppointmentModel";
 import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
 import {TimeTableCoordinates} from "./TimetableColumn";
-import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {updateAppointmentsActive} from "../../state/ModulesStateSlice";
 
 type AppointmentVisualizerComponentProps = {
     appointment: AppointmentModel;
@@ -21,16 +22,16 @@ const StyleMap: {[key in ColorVariant]: string} = {
 }
 
 export const AppointmentVisualizerComponent = ({appointment, coordinate}: AppointmentVisualizerComponentProps) => {
-    const [active, setActive] = useState(appointment.active);
+    const dispatch = useDispatch();
 
-    const toggleActive = () => {
-        setActive(!active);
+    const toggleAppointmentActive = () => {
+        dispatch(updateAppointmentsActive( { [appointment.id]: !appointment.active}))
     }
 
     return (
         <div className={cls("bg-white rounded-rm flex justify-center items-center flex-col overflow-y-hidden border-2 cursor-pointer",
-            active ? StyleMap[appointment.variant] : "border-inactive")}
-             style={{gridRowStart: coordinate.yStart, gridRowEnd: coordinate.yEnd, gridColumnStart: coordinate.xStart, gridColumnEnd: coordinate.xEnd}} onClick={toggleActive}>
+            appointment.active ? StyleMap[appointment.variant] : "border-inactive")}
+             style={{gridRowStart: coordinate.yStart, gridRowEnd: coordinate.yEnd, gridColumnStart: coordinate.xStart, gridColumnEnd: coordinate.xEnd}} onClick={toggleAppointmentActive}>
             <h3>{appointment.title}</h3>
         </div>
     )

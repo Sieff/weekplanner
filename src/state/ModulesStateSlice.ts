@@ -1,4 +1,10 @@
-import {createEntityAdapter, createSelector, createSlice, EntityState, PayloadAction, Update} from '@reduxjs/toolkit'
+import {
+    createEntityAdapter,
+    createSelector,
+    createSlice,
+    EntityState,
+    PayloadAction
+} from '@reduxjs/toolkit'
 import {ModuleModel} from "../models/ModuleModel";
 import {SectionModel} from "../models/SectionModel";
 import {AppointmentModel} from "../models/AppointmentModel";
@@ -38,11 +44,15 @@ export const ModuleStateSlice = createSlice({
         removeAppointment: (state, action: PayloadAction<AppointmentModel>) => {
             appointmentsAdapter.removeOne(state.appointments as EntityState<AppointmentModel>, action.payload.id);
         },
-        updateAppointment: (state, action: PayloadAction<Update<AppointmentModel>>) => {
-            appointmentsAdapter.updateOne(state.appointments as EntityState<AppointmentModel>, action.payload);
+        updateAppointmentsActive: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+            Object.entries(action.payload).forEach(([key, active]) => {
+                const appointment = state.appointments.entities[key]!;
+                appointment.active = active;
+                appointmentsAdapter.setOne(state.appointments as EntityState<AppointmentModel>, appointment as AppointmentModel);
+            });
         }
     },
-})
+});
 
 export type ModuleState = {
     modules: EntityState<ModuleModel>;
@@ -51,7 +61,7 @@ export type ModuleState = {
 }
 
 // Action creators are generated for each case reducer function
-export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateAppointment } = ModuleStateSlice.actions
+export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateAppointmentsActive } = ModuleStateSlice.actions
 
 export const {
     selectAll: selectModules,
@@ -69,7 +79,7 @@ export const selectSectionsByModule = createSelector(
 );
 
 export const {
-    selectAll: selectAppointments,
+    selectAll: selectAppointments
     // Pass in a selector that returns the posts slice of state
 } = appointmentsAdapter.getSelectors<RootState>((state) => state.modules.appointments);
 

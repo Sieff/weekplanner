@@ -120,10 +120,10 @@ export class TimeService {
         return [coordinates, lanes.length];
     }
 
-    public GenerateSchedule(sections: { [p: string]: SectionModel }): {[key: string]: boolean} {
-        const schedule: {[key: string]: boolean} = {};
+    public GenerateSchedule(sections: SectionModel[], appointments: AppointmentModel[]): {[key: string]: boolean} {
+        return Object.fromEntries(appointments.map((appointment) => {
+            return [appointment.id, false]
+        }));
         //TODO: Actual algorithm;
-
-        return schedule;
     }
 }
