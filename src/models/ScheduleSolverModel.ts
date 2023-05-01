@@ -10,8 +10,7 @@ export class ScheduleSolverModel {
     }
 
     public GetSolution(): number[] | undefined {
-        console.log(this._solutions);
-        if (!this._solutions) return undefined;
+        if (!this._solutions || this._solutions.length === 0) return undefined;
 
         if (this._currentSolution === undefined) {
             this._currentSolution = 0;
