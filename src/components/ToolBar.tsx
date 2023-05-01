@@ -29,7 +29,7 @@ export const ToolBar = () => {
     }
 
     return (
-        <div className={"rounded-rl p-l mx-l border-primary border-2 flex gap-m"}>
+        <div className={"rounded-rl p-l mx-l border-primary border-2 flex gap-m shadow-box"}>
             <ModuleCreatorModal submitCallback={onCreate}/>
             <Button onClick={generateSchedule}>
                 Zeitplan generieren

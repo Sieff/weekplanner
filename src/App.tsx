@@ -10,7 +10,7 @@ function App() {
   return (
       <ServiceProvider>
           <PortalRoot>
-              <div className={"flex flex-col gap-l"}>
+              <div className={"flex flex-col gap-l my-l"}>
                   <Timetable />
                   <ToolBar />
                   <ModulesManager />

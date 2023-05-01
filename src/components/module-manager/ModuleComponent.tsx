@@ -32,7 +32,7 @@ export const ModuleComponent = ({module}: ModuleEditorProps) => {
     };
 
     return (
-        <div className={cls("p-l max-w-sm flex flex-col gap-m rounded-rl border-2",
+        <div className={cls("p-l max-w-sm flex flex-col gap-m rounded-rl border-2 shadow-box",
             StyleMap[module.variant])}>
             <h2>{module.title}</h2>
             {sections.map((section) =>

@@ -25,10 +25,10 @@ export const TimetableColumn = ({weekday, appointments}: TimetableColumnProps) =
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.header}>{weekdayService.GetLabel(weekday)}</h2>
-            <div className={styles.swimlane} style={{gridTemplateRows: "repeat(" + timeService.units.length + ", 7px)", gridTemplateColumns: "repeat(" + gridWidth + ", 1fr)"}}>
+            <h2 className={"flex justify-center px-s"}>{weekdayService.GetLabel(weekday)}</h2>
+            <div className={"grid border-l-2 border-divider"} style={{gridTemplateRows: "repeat(" + timeService.units.length + ", 7px)", gridTemplateColumns: "repeat(" + gridWidth + ", 1fr)"}}>
                 {timeService.units.map((_, idx) =>
-                    <div className={styles.unit} key={idx} style={{gridRow: idx+1, gridColumn: "1 / " + (gridWidth+1)}}></div>)}
+                    <div className={"h-0.5"} key={idx} style={{gridRow: idx+1, gridColumn: "1 / " + (gridWidth+1)}}></div>)}
                 {appointments.map((appointment, idx) => {
                     return (
                         <AppointmentVisualizerComponent key={idx}

@@ -70,20 +70,6 @@ export class TimeService {
         return current;
     }
 
-    public GetEmptySlots(appointments: AppointmentModel[]): number[] {
-        const filledSlots: number[] = [];
-        appointments.forEach((appointment) => {
-            const start = this.GetTimeUnitId(appointment.start);
-            const end = this.GetTimeUnitId(appointment.end);
-            filledSlots.push(start)
-            for (let i = start + 1; i < end; i++) {
-                filledSlots.push(i);
-            }
-        });
-
-        return Array.from(Array(this._units.length).keys()).map((number) => number + 1).filter((number) => filledSlots.indexOf(number) === -1);
-    }
-
     private IsLaneFree(lane: AppointmentModel[], appointment: AppointmentModel): boolean {
         let hasCollision = false;
         lane.forEach((laneAppointment) => {
@@ -115,7 +101,7 @@ export class TimeService {
         lanes.forEach((appointments, laneIndex) => {
             appointments.forEach((appointment) => {
                 const start = this.GetTimeUnitId(appointment.start);
-                const end = this.GetTimeUnitId(appointment.end);
+                const end = this.GetTimeUnitId(appointment.end) + 1;
                 coordinates[appointment.id] = {yStart: start, yEnd: end, xStart: laneIndex + 1, xEnd: laneIndex + 2};
             })
         });

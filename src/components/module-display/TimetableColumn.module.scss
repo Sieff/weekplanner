@@ -7,17 +7,3 @@
   display: flex;
   justify-content: center;
 }
-
-.swimlane {
-  display: grid;
-  border-left: gray 1px solid;
-}
-
-.unit:first-child {
-  border-top: none;
-}
-
-.unit {
-  border-top: 1px solid var(--color-divider);
-  height: 6px;
-}

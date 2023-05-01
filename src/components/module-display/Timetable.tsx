@@ -11,7 +11,7 @@ export const Timetable = () => {
     const appointments = useSelector(selectAppointments);
 
     return (
-        <div className={"flex flex-row mx-l"}>
+        <div className={"flex flex-row mx-l border-2 border-inactive rounded-rl p-l shadow-box"}>
             <HourColumn />
             {weekdayService.AllWeekdays().map((weekday) => {
                 return <TimetableColumn weekday={weekday}
