@@ -5,6 +5,8 @@ import {SectionModel} from "../../models/SectionModel";
 import {addAppointment, selectAppointmentsBySection} from "../../state/ModulesStateSlice";
 import {AppointmentComponent} from "./AppointmentComponent";
 import {AppointmentModel} from "../../models/AppointmentModel";
+import {Button} from "../Button";
+import React from "react";
 
 type SectionComponentProps = {
     section: SectionModel;
@@ -32,7 +34,9 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
                     )}
                 )}
             </div>
-            <AppointmentCreatorModal submitCallback={onCreate} variant={section.variant} />
+            <AppointmentCreatorModal submitCallback={onCreate}>
+                <Button onClick={() => {}} variant={section.variant}>Veranstaltung hinzufügen</Button>
+            </AppointmentCreatorModal>
             <div className={styles.divider}></div>
         </div>
     )

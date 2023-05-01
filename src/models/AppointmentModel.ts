@@ -3,6 +3,7 @@ import {Moment} from "moment/moment";
 import {v4 as uuid} from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
+import {AppointmentFormRawData} from "../components/modal/AppointmentCreatorModal";
 
 export class AppointmentModel {
     [immerable] = true;
@@ -27,7 +28,16 @@ export class AppointmentModel {
     }
 
     public CollidesWith(other: AppointmentModel): boolean {
-        return other.end > this.start && this.end > other.start
+        return other.end > this.start && this.end > other.start && this.weekday === other.weekday;
+    }
+
+    public GetRawData(): AppointmentFormRawData {
+        return {
+            title: this._title,
+            start: this._start.format("HH:mm"),
+            end: this.end.format("HH:mm"),
+            weekday: this._weekday
+        }
     }
 
     get id(): string {
@@ -64,5 +74,21 @@ export class AppointmentModel {
 
     set active(value: boolean) {
         this._active = value;
+    }
+
+    set title(value: string) {
+        this._title = value;
+    }
+
+    set weekday(value: Weekday) {
+        this._weekday = value;
+    }
+
+    set start(value: moment.Moment) {
+        this._start = value;
+    }
+
+    set end(value: moment.Moment) {
+        this._end = value;
     }
 }

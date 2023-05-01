@@ -44,5 +44,5 @@ h3 {
     font-size: 18px;
     line-height: 26px;
     font-weight: bold;
-    margin-bottom: var(--pad-s);
+    margin: var(--pad-s) 0;
 }

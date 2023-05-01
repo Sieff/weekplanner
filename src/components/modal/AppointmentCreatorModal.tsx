@@ -1,6 +1,5 @@
 import {FieldValues, useForm} from "react-hook-form";
 import React, {useCallback, useContext, useState} from "react";
-import {Button} from "../Button";
 import {Moment} from "moment";
 import {Weekday} from "../../models/Weekday";
 import Modal from "./Modal";
@@ -9,15 +8,15 @@ import {TextField} from "../form/TextField";
 import {DropDown} from "../form/DropDown";
 import {TimeChooser} from "../form/TimeChooser";
 import {Form} from "../form/Form";
-import {ColorVariant} from "../../models/Variant";
 
-type AppointmentCreatorProps = {
+type AppointmentCreatorProps = React.PropsWithChildren<{
     /**
      * Callback that is called with the created appointment
      */
     submitCallback: (appointment: AppointmentFormData) => void;
-    variant: ColorVariant;
-};
+    startValues?: AppointmentFormRawData;
+    initialShow?: boolean;
+}>;
 
 export type AppointmentFormData = {
     title: string;
@@ -26,19 +25,26 @@ export type AppointmentFormData = {
     weekday: Weekday;
 }
 
-const defaultValues = {
+export type AppointmentFormRawData = {
+    title: string;
+    start: string;
+    end: string;
+    weekday: string;
+}
+
+const defaultValues: AppointmentFormRawData = {
     title: "",
     start: "",
     end: "",
     weekday: ""
 }
 
-export const AppointmentCreatorModal = ({submitCallback, variant}: AppointmentCreatorProps) => {
+export const AppointmentCreatorModal = ({submitCallback, startValues, children, initialShow}: AppointmentCreatorProps) => {
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: defaultValues });
-    const [show, setShow] = useState(false);
+    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: startValues || defaultValues });
+    const [show, setShow] = useState(initialShow);
 
     const validateTimes = (value: string, formValues: FieldValues) => {
         if (formValues.start === "" || formValues.end === "") {
@@ -80,7 +86,9 @@ export const AppointmentCreatorModal = ({submitCallback, variant}: AppointmentCr
 
     return (
         <>
-            <Button onClick={openModal} variant={variant}>Veranstaltung hinzufügen</Button>
+            <div onClick={openModal}>
+                {children}
+            </div>
             {show && (
                 <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neue Veranstaltung"}>
                     <Form>

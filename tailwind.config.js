@@ -37,6 +37,7 @@ module.exports = {
       translate: {
         'm1.5': '-1.5rem',
         'above': 'calc(-1 * var(--pad-s) - 100%)',
+        'below': 'calc(var(--pad-s) + 100%)',
         'center': '-50%',
       },
       spacing: {
