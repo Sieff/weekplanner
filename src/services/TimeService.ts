@@ -5,13 +5,14 @@ import {AppointmentModel} from "../models/AppointmentModel";
 import {TimeTableCoordinates} from "../components/module-display/TimetableColumn";
 import {SectionModel} from "../models/SectionModel";
 import {AppointmentGraphModel} from "../models/AppointmentGraphModel";
+import {ScheduleSolverModel} from "../models/ScheduleSolverModel";
 
 export class TimeService {
     private _timetableStart: Moment = moment("08:00", 'HH:mm').utc(true);
     private _timetableEnd: Moment = moment("20:00", 'HH:mm').utc(true);
     private _timetableStep: number = 15;
     private readonly _units = [] as TimeUnitModel[];
-    private _lastSolution?: number[] = undefined;
+    private _scheduleSolver?: ScheduleSolverModel;
 
     constructor() {
         this._units = this.GenerateTimeUnits();
@@ -123,6 +124,22 @@ export class TimeService {
     }
 
     public GenerateSchedule(sections: SectionModel[], appointments: AppointmentModel[]): {[key: string]: boolean} {
+        const {fixedAppointments, flexibleAppointments, sectionedCandidates, appointmentGraph} = this.GenerateSolverSetup(sections, appointments);
+
+        const scheduleSolver = this.PrepareSolver(appointmentGraph.conflictEdges);
+
+        scheduleSolver.GenerateSolutions(sectionedCandidates);
+
+        const solution = scheduleSolver.GetSolution();
+
+        if (solution) {
+            const choosenOptions = sectionedCandidates.map((section, idx) => section[solution[idx]])
+            return this.CombineAppointments(fixedAppointments, flexibleAppointments, choosenOptions);
+        }
+        return {}
+    }
+
+    private GenerateSolverSetup(sections: SectionModel[], appointments: AppointmentModel[]): SolverSetup {
         const sectionLookup = Object.fromEntries(sections.map((section) => {
             return [section.id, section];
         }));
@@ -142,91 +159,22 @@ export class TimeService {
         const candidates = Object.values(flexibleAppointments).filter((appointment) => {
             return !excluded.some((excludedId) => excludedId === appointment.id);
         });
+
         const sectionedCandidates = flexibleSections.map((section) => {
             return candidates.filter((candidate) => candidate.sectionId === section.id)
         }).filter((section) => section.length > 0);
 
-        const solution = this.GetNonConflictingCandidates(sectionedCandidates, appointmentGraph.conflictEdges, this._lastSolution);
-        this._lastSolution = solution;
-        if (solution) {
-            const choosenOptions = sectionedCandidates.map((section, idx) => section[solution[idx]])
-            return this.CombineAppointments(fixedAppointments, flexibleAppointments, choosenOptions);
-        }
-        return {}
+        return {fixedAppointments, flexibleAppointments, sectionedCandidates, appointmentGraph};
     }
 
-    public GetNonConflictingCandidates(candidates: AppointmentModel[][], conflictEdges: {[key: string]: Set<string>}, startIndices?: number[]): number[] | undefined {
-        const maxIndices = candidates.map((section) => section.length - 1);
-
-        let indices: number[] = candidates.map(() => 0);
-        if (startIndices && this.SolutionInBound(startIndices, maxIndices) && this.CheckCombination(candidates.map((section, idx) => {
-            return section[startIndices[idx]]
-        }), conflictEdges)) {
-            indices = Object.assign([], startIndices);
-            this.IterateIndices(indices, maxIndices);
+    private PrepareSolver(conflictEdges: {[key: string]: Set<string>}): ScheduleSolverModel {
+        if (!this._scheduleSolver) {
+            this._scheduleSolver = new ScheduleSolverModel(conflictEdges);
+        } else {
+            this._scheduleSolver.conflictEdges = conflictEdges;
         }
 
-        do {
-            const combinationWorks = this.CheckCombination(candidates.map((section, idx) => {
-                return section[indices[idx]]
-            }), conflictEdges);
-            if (combinationWorks) {
-                return indices;
-            }
-        } while (this.IterateIndices(indices, maxIndices, startIndices))
-        return undefined;
-    }
-
-    private CheckCombination(candidates: AppointmentModel[], conflictEdges: {[key: string]: Set<string>}): boolean {
-        let combinationWorks = true;
-
-        candidates.forEach((candidate1, idx1) => {
-            candidates.forEach((candidate2, idx2) => {
-                if (idx1 === idx2) return;
-                if (conflictEdges[candidate1.id].has(candidate2.id)) {
-                    combinationWorks = false;
-                }
-            });
-        });
-        return combinationWorks;
-    }
-
-    private IterateIndices(indices: number[], max: number[], stop?: number[]): boolean {
-        for (let i = 0; i < indices.length; i++) {
-            if (indices[i] < max[i]) {
-                indices[i]++;
-                break;
-            }
-            indices[i] = 0;
-        }
-        return stop ? !this.ArraysEqual(stop, indices) : !this.ArraysEqual(max, indices);
-    }
-
-    private ArraysEqual(a: number[], b: number[]): boolean {
-        if (a === b) return true;
-        if (a == null || b == null) return false;
-        if (a.length !== b.length) return false;
-
-        // If you don't care about the order of the elements inside
-        // the array, you should sort both arrays here.
-        // Please note that calling sort on an array will modify that array.
-        // you might want to clone your array first.
-
-        for (var i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
-        }
-        return true;
-    }
-
-    private SolutionInBound(solution: number[], maxIndices: number[]): boolean {
-        if (solution === maxIndices) return true;
-        if (solution == null || maxIndices == null) return false;
-        if (solution.length !== maxIndices.length) return false;
-
-        for (var i = 0; i < solution.length; ++i) {
-            if (solution[i] > maxIndices[i]) return false;
-        }
-        return true;
+        return this._scheduleSolver;
     }
 
     private CombineAppointments(fixedAppointments: { [p: string]: AppointmentModel }, flexibleAppointments: { [p: string]: AppointmentModel }, choosenOptions: AppointmentModel[]) {
@@ -235,4 +183,11 @@ export class TimeService {
         const chosenFlexible = Object.fromEntries(choosenOptions.map(appointment => [appointment.id, true]));
         return Object.assign({}, fixed, flexible, chosenFlexible);
     }
+}
+
+type SolverSetup = {
+    fixedAppointments: {[p: string]: AppointmentModel};
+    flexibleAppointments: {[p: string]: AppointmentModel};
+    sectionedCandidates: AppointmentModel[][];
+    appointmentGraph: AppointmentGraphModel;
 }
