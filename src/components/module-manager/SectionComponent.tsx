@@ -7,6 +7,7 @@ import {AppointmentComponent} from "./AppointmentComponent";
 import {AppointmentModel} from "../../models/AppointmentModel";
 import {Button} from "../Button";
 import React from "react";
+import {useComponentVisible} from "../../hooks/UseComponentVisible";
 
 type SectionComponentProps = {
     section: SectionModel;
@@ -15,10 +16,12 @@ type SectionComponentProps = {
 export const SectionComponent = ({section}: SectionComponentProps) => {
     const dispatch = useDispatch()
     const appointments = useSelector((state) => selectAppointmentsBySection(state, section.id));
+    const { isComponentVisible, showComponent, hideComponent } = useComponentVisible(false);
 
     const onCreate = (appointmentData: AppointmentFormData) => {
         const newAppointment = new AppointmentModel(section.id, section.variant, appointmentData.title, appointmentData.weekday, appointmentData.start, appointmentData.end);
         dispatch(addAppointment(newAppointment));
+        hideComponent();
     };
 
     return (
@@ -34,9 +37,8 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
                     )}
                 )}
             </div>
-            <AppointmentCreatorModal submitCallback={onCreate}>
-                <Button onClick={() => {}} variant={section.variant}>Veranstaltung hinzufügen</Button>
-            </AppointmentCreatorModal>
+            <Button onClick={showComponent} variant={section.variant}>Veranstaltung hinzufügen</Button>
+            {isComponentVisible && <AppointmentCreatorModal onSubmit={onCreate} onClose={hideComponent} />}
             <div className={styles.divider}></div>
         </div>
     )

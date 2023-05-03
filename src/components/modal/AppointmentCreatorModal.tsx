@@ -1,5 +1,5 @@
 import {FieldValues, useForm} from "react-hook-form";
-import React, {useCallback, useContext, useState} from "react";
+import React, {useCallback, useContext} from "react";
 import {Moment} from "moment";
 import {Weekday} from "../../models/Weekday";
 import Modal from "./Modal";
@@ -9,14 +9,14 @@ import {DropDown} from "../form/DropDown";
 import {TimeChooser} from "../form/TimeChooser";
 import {Form} from "../form/Form";
 
-type AppointmentCreatorProps = React.PropsWithChildren<{
+type AppointmentCreatorProps = {
     /**
      * Callback that is called with the created appointment
      */
-    submitCallback: (appointment: AppointmentFormData) => void;
+    onSubmit: (appointment: AppointmentFormData) => void;
+    onClose: () => void;
     startValues?: AppointmentFormRawData;
-    initialShow?: boolean;
-}>;
+};
 
 export type AppointmentFormData = {
     title: string;
@@ -39,12 +39,11 @@ const defaultValues: AppointmentFormRawData = {
     weekday: ""
 }
 
-export const AppointmentCreatorModal = ({submitCallback, startValues, children, initialShow}: AppointmentCreatorProps) => {
+export const AppointmentCreatorModal = ({onSubmit, startValues, onClose}: AppointmentCreatorProps) => {
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: startValues || defaultValues });
-    const [show, setShow] = useState(initialShow);
+    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: defaultValues });
 
     const validateTimes = (value: string, formValues: FieldValues) => {
         if (formValues.start === "" || formValues.end === "") {
@@ -65,7 +64,6 @@ export const AppointmentCreatorModal = ({submitCallback, startValues, children, 
         return start < end;
     };
 
-
     const labelFunction = useCallback(
         (weekday: Weekday) => {
             return weekdayService.GetLabel(weekday);
@@ -73,47 +71,34 @@ export const AppointmentCreatorModal = ({submitCallback, startValues, children, 
         [weekdayService],
     );
 
-    const openModal = () => setShow(true);
-    const closeModal = () => setShow(false);
-
-    const onSubmit = (data: FieldValues) => {
+    const processSubmit = (data: FieldValues) => {
         const start = timeService.ParseTime(data.start);
         const end = timeService.ParseTime(data.end);
-        submitCallback({title: data.title, start, end, weekday: data.weekday});
-        closeModal();
+        onSubmit({title: data.title, start, end, weekday: data.weekday});
         reset();
     };
 
     return (
-        <>
-            <div onClick={openModal}>
-                {children}
-            </div>
-            {show && (
-                <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neue Veranstaltung"}>
-                    <Form>
-                        <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title}/>
-                        <div className="w-full flex content-between gap-m">
-                            <TimeChooser register={register("start", {required: true, validate: validateTimes})}
-                                         caption="Startzeit"
-                                         dirty={dirtyFields.start}
-                                         error={errors.start} />
-                            <TimeChooser register={register("end", {required: true, validate: validateTimes})}
-                                         caption="Endzeit"
-                                         dirty={dirtyFields.end}
-                                         error={errors.end} />
-                        </div>
-                        <DropDown register={register("weekday", {required: true})}
-                                  options={weekdayService.AllWeekdays()}
-                                  labelFunction={labelFunction}
-                                  error={errors.weekday}
-                                  dirty={dirtyFields.weekday}
-                                  caption="Wochentag" />
-                    </Form>
-                </Modal>
-            )}
-        </>
-
-
+        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={"Neue Veranstaltung"}>
+            <Form>
+                <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title}/>
+                <div className="w-full flex content-between gap-m">
+                    <TimeChooser register={register("start", {required: true, validate: validateTimes})}
+                                 caption="Startzeit"
+                                 dirty={dirtyFields.start}
+                                 error={errors.start} />
+                    <TimeChooser register={register("end", {required: true, validate: validateTimes})}
+                                 caption="Endzeit"
+                                 dirty={dirtyFields.end}
+                                 error={errors.end} />
+                </div>
+                <DropDown register={register("weekday", {required: true})}
+                          options={weekdayService.AllWeekdays()}
+                          labelFunction={labelFunction}
+                          error={errors.weekday}
+                          dirty={dirtyFields.weekday}
+                          caption="Wochentag" />
+            </Form>
+        </Modal>
     )
 }

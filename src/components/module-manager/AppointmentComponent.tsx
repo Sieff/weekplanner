@@ -1,12 +1,13 @@
 import {AppointmentModel} from "../../models/AppointmentModel";
 import {TimeServiceContext, WeekdayServiceContext} from "../../services/ServiceProvider";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
 import {useDispatch} from "react-redux";
 import {removeAppointment, updateAppointment, updateAppointmentsActive} from "../../state/ModulesStateSlice";
 import {DotsMenu, Option} from "../DotsMenu";
 import {AppointmentCreatorModal, AppointmentFormData} from "../modal/AppointmentCreatorModal";
+import {useComponentVisible} from "../../hooks/UseComponentVisible";
 
 type SingleAppointmentProps = {
     appointment: AppointmentModel;
@@ -43,7 +44,7 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
     const dispatch = useDispatch();
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
-    const [showEditor, setShowEditor] = useState(true);
+    const { isComponentVisible, showComponent, hideComponent } = useComponentVisible(false);
 
     const toggleAppointmentActive = () => {
         dispatch(updateAppointmentsActive( { [appointment.id]: !appointment.active}))
@@ -55,15 +56,14 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
                 dispatch(removeAppointment(appointment));
                 break;
             case DotsMenuActions.edit:
-                console.log(action)
-                setShowEditor(true);
+                showComponent();
                 break;
         }
     }
 
     const submitUpdateAppointment = (data: AppointmentFormData) => {
-        setShowEditor(false);
         dispatch(updateAppointment({appointment, data}));
+        hideComponent();
     }
 
     const weekday = weekdayService.GetLabel(appointment.weekday);
@@ -72,10 +72,10 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
         <div className={cls("p-m rounded-rm border-2 shadow-box flex flex-col cursor-pointer",
             appointment.active ? StyleMap[appointment.variant] : "border-white")}
              onClick={toggleAppointmentActive}>
-            <div className={"flex justify-between items-center"}>
+            <div className={"flex justify-between items-center gap-l"}>
                 <h3>{appointment.title}</h3>
                 <DotsMenu options={DotsMenuOptions} optionCallback={handleDotsMenuCallback} />
-                <AppointmentCreatorModal submitCallback={submitUpdateAppointment} startValues={appointment.GetRawData()} initialShow={showEditor} />
+                {isComponentVisible && <AppointmentCreatorModal onSubmit={submitUpdateAppointment} startValues={appointment.GetRawData()} onClose={hideComponent} />}
             </div>
             <div>
                 {weekday}

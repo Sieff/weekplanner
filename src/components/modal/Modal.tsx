@@ -18,13 +18,17 @@ const Modal = ({onClose, onSubmit, title, children}: ModalProps) => {
         const listener = (event: MouseEvent) => {
             if (event.target === current) onClose();
         };
-        current?.addEventListener("click", listener);
-        return () => current?.removeEventListener("click", listener);
+        current?.addEventListener("mousedown", listener);
+        return () => current?.removeEventListener("mousedown", listener);
     });
+
+    const stopPropagation = (e: any) => {
+        e.stopPropagation();
+    }
 
     return (
         <Portal>
-            <div className={styles.backdrop} ref={backdrop}>
+            <div className={styles.backdrop} ref={backdrop} onClick={stopPropagation}>
                 <div className={styles.modalContent}>
                     <div className={styles.modalHeader}>
                         <h2 className={styles.modalTitle}>{title}</h2>

@@ -10,6 +10,9 @@ export const useComponentVisible = (initialIsVisible: boolean) => {
         }
     };
 
+    const showComponent = () => setIsComponentVisible(true);
+    const hideComponent = () => setIsComponentVisible(false);
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside, true);
         return () => {
@@ -17,5 +20,5 @@ export const useComponentVisible = (initialIsVisible: boolean) => {
         };
     }, []);
 
-    return { ref, isComponentVisible, setIsComponentVisible };
+    return { ref, isComponentVisible, setIsComponentVisible, showComponent, hideComponent };
 }
