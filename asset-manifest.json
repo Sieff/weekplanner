@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/weekplanner/static/css/main.8e1d9a80.css",
-    "main.js": "/weekplanner/static/js/main.7329aee5.js",
+    "main.css": "/weekplanner/static/css/main.4c0879e9.css",
+    "main.js": "/weekplanner/static/js/main.47f1aa90.js",
     "static/js/787.83a795ea.chunk.js": "/weekplanner/static/js/787.83a795ea.chunk.js",
     "static/media/info_icon.svg": "/weekplanner/static/media/info_icon.ed97f4a837f54c9f13d8bf6eb81c5704.svg",
     "index.html": "/weekplanner/index.html",
     "static/media/more.svg": "/weekplanner/static/media/more.8b6cf9715d7e79442428c57eee1dead2.svg",
-    "main.8e1d9a80.css.map": "/weekplanner/static/css/main.8e1d9a80.css.map",
-    "main.7329aee5.js.map": "/weekplanner/static/js/main.7329aee5.js.map",
+    "main.4c0879e9.css.map": "/weekplanner/static/css/main.4c0879e9.css.map",
+    "main.47f1aa90.js.map": "/weekplanner/static/js/main.47f1aa90.js.map",
     "787.83a795ea.chunk.js.map": "/weekplanner/static/js/787.83a795ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8e1d9a80.css",
-    "static/js/main.7329aee5.js"
+    "static/css/main.4c0879e9.css",
+    "static/js/main.47f1aa90.js"
   ]
 }
