@@ -37,9 +37,9 @@ export const ModuleComponent = ({module}: ModuleEditorProps) => {
     };
 
     return (
-        <div className={cls("p-l max-w-sm flex flex-col gap-m rounded-rl border-2 shadow-box",
+        <div className={cls("p-l max-w-lg flex flex-col gap-m rounded-rl border-2 shadow-box",
             StyleMap[module.variant])}>
-            <h2>{module.title}</h2>
+            <h2 className={"[word-break:break-word]"}>{module.title}</h2>
             {sections.map((section) =>
                 <SectionComponent section={section} key={section.id} />)}
             <Button onClick={showComponent} variant={module.variant}>Abschnitt hinzufügen</Button>

@@ -56,8 +56,8 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
         <div className={cls("p-m rounded-rm border-2 shadow-box flex flex-col cursor-pointer",
             appointment.active ? StyleMap[appointment.variant] : "border-white")}
              onClick={toggleAppointmentActive}>
-            <div className={"flex justify-between items-center gap-l"}>
-                <h3>{appointment.title}</h3>
+            <div className={"flex justify-between items-center gap-m"}>
+                <h3 className={"[word-break:break-word]"}>{appointment.title}</h3>
                 <DotsMenu options={EditOptions} optionCallback={handleDotsMenuCallback} />
                 {isComponentVisible && <AppointmentCreatorModal onSubmit={submitUpdateAppointment} startValues={appointment.GetRawData()} onClose={hideComponent} />}
             </div>

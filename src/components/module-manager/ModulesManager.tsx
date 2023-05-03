@@ -1,13 +1,12 @@
 import {useSelector} from "react-redux";
 import {selectModules} from "../../state/ModulesStateSlice";
-import styles from "./ModulesManager.module.scss"
 import {ModuleComponent} from "./ModuleComponent";
 
 export const ModulesManager = () => {
     const modules = useSelector(selectModules);
 
     return (
-        <div className={styles.container}>
+        <div className={"flex flex-wrap items-start gap-m px-l"}>
             {modules.map((module) => {
                 return (<ModuleComponent module={module} key={module.id}/>)
             })}

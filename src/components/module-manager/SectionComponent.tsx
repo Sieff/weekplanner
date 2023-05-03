@@ -48,9 +48,11 @@ export const SectionComponent = ({section}: SectionComponentProps) => {
 
     return (
         <div className={"flex flex-col gap-s"}>
-            <div className={"flex items-center gap-s"}>
-                <h3>{section.title}</h3>
-                {section.optional && <div className={"text-divider"}>- flexibel</div>}
+            <div className={"flex items-center gap-m"}>
+                <div className={"flex items-center"}>
+                    <h3 className={"[word-break:break-word]"}>{section.title}</h3>
+                    {section.optional && <div className={"text-divider whitespace-pre"}> - flexibel</div>}
+                </div>
                 <DotsMenu options={EditOptions} optionCallback={handleDotsMenuCallback} />
                 {sectionEditorVisible && <SectionCreatorModal onSubmit={submitUpdateSection} startValues={section.GetRawData()} onClose={hideSectionEditor} />}
             </div>

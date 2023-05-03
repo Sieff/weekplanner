@@ -49,7 +49,7 @@ export const DotsMenu = ({options, optionCallback}: DotsMenuProps) => {
     }
 
     return (
-        <div className="inline-block hover:bg-divider rounded-full active:bg-neutral-400" onClick={toggleMenu} ref={dotsRef}>
+        <div className="inline-block hover:bg-divider rounded-full active:bg-neutral-400 shrink-0" onClick={toggleMenu} ref={dotsRef}>
             <div className="flex justify-center items-center cursor-pointer">
                 <img src={more} alt="Dot Menu" className={"h-6 w-6"}/>
             </div>
