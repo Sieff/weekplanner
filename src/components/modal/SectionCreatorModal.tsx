@@ -34,7 +34,7 @@ export const SectionCreatorModal = ({onSubmit, onClose, startValues}: Appointmen
     };
 
     return (
-        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={"Neuer Abschnitt"}>
+        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={"Neuer Abschnitt"} edit={!!startValues}>
             <Form>
                 <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title || !!startValues?.title}/>
                 <CheckBox register={register("optional")}>

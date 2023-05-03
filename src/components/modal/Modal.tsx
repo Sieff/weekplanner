@@ -8,9 +8,10 @@ type ModalProps = React.PropsWithChildren<{
     onClose: () => void;
     onSubmit: () => void;
     title: string;
+    edit?: boolean;
 }>
 
-const Modal = ({onClose, onSubmit, title, children}: ModalProps) => {
+const Modal = ({onClose, onSubmit, title, children, edit}: ModalProps) => {
     const backdrop = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const Modal = ({onClose, onSubmit, title, children}: ModalProps) => {
                         </Button>
                         <Button onClick={onSubmit} variant={ButtonVariant.accept}>
                             <div className={styles.modalButtonContent}>
-                                Hinzufügen
+                                {edit ? "Speichern" : "Hinzufügen"}
                             </div>
                         </Button>
                     </div>
