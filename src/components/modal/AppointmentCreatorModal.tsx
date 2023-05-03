@@ -43,7 +43,7 @@ export const AppointmentCreatorModal = ({onSubmit, startValues, onClose}: Appoin
     const timeService = useContext(TimeServiceContext);
     const weekdayService = useContext(WeekdayServiceContext);
 
-    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: defaultValues });
+    const {register, handleSubmit, clearErrors, setError, formState: { errors, dirtyFields }, reset} = useForm({ defaultValues: defaultValues, values: startValues });
 
     const validateTimes = (value: string, formValues: FieldValues) => {
         if (formValues.start === "" || formValues.end === "") {
@@ -81,22 +81,22 @@ export const AppointmentCreatorModal = ({onSubmit, startValues, onClose}: Appoin
     return (
         <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={"Neue Veranstaltung"}>
             <Form>
-                <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title}/>
+                <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title || !!startValues?.title}/>
                 <div className="w-full flex content-between gap-m">
                     <TimeChooser register={register("start", {required: true, validate: validateTimes})}
                                  caption="Startzeit"
-                                 dirty={dirtyFields.start}
+                                 dirty={dirtyFields.start || !!startValues?.start}
                                  error={errors.start} />
                     <TimeChooser register={register("end", {required: true, validate: validateTimes})}
                                  caption="Endzeit"
-                                 dirty={dirtyFields.end}
+                                 dirty={dirtyFields.end || !!startValues?.end}
                                  error={errors.end} />
                 </div>
                 <DropDown register={register("weekday", {required: true})}
                           options={weekdayService.AllWeekdays()}
                           labelFunction={labelFunction}
                           error={errors.weekday}
-                          dirty={dirtyFields.weekday}
+                          dirty={dirtyFields.weekday || !!startValues?.weekday}
                           caption="Wochentag" />
             </Form>
         </Modal>
