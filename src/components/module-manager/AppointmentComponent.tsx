@@ -5,7 +5,7 @@ import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
 import {useDispatch} from "react-redux";
 import {removeAppointment, updateAppointment, updateAppointmentsActive} from "../../state/ModulesStateSlice";
-import {DotsMenu, Option} from "../DotsMenu";
+import {DotsMenu, EditActions, EditOptions} from "../DotsMenu";
 import {AppointmentCreatorModal, AppointmentFormData} from "../modal/AppointmentCreatorModal";
 import {useComponentVisible} from "../../hooks/UseComponentVisible";
 
@@ -24,22 +24,6 @@ const StyleMap: {[key in ColorVariant]: string} = {
     [ColorVariant.pink]: "border-pink-500",
 }
 
-enum DotsMenuActions {
-    delete,
-    edit
-}
-
-const DotsMenuOptions: Option[] = [
-    {
-        label: "Bearbeiten",
-        value: DotsMenuActions.edit
-    },
-    {
-        label: "Löschen",
-        value: DotsMenuActions.delete
-    }
-]
-
 export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
     const dispatch = useDispatch();
     const timeService = useContext(TimeServiceContext);
@@ -50,12 +34,12 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
         dispatch(updateAppointmentsActive( { [appointment.id]: !appointment.active}))
     }
 
-    const handleDotsMenuCallback = (action: DotsMenuActions) => {
+    const handleDotsMenuCallback = (action: EditActions) => {
         switch (action) {
-            case DotsMenuActions.delete:
+            case EditActions.delete:
                 dispatch(removeAppointment(appointment));
                 break;
-            case DotsMenuActions.edit:
+            case EditActions.edit:
                 showComponent();
                 break;
         }
@@ -74,7 +58,7 @@ export const AppointmentComponent = ({appointment}: SingleAppointmentProps) => {
              onClick={toggleAppointmentActive}>
             <div className={"flex justify-between items-center gap-l"}>
                 <h3>{appointment.title}</h3>
-                <DotsMenu options={DotsMenuOptions} optionCallback={handleDotsMenuCallback} />
+                <DotsMenu options={EditOptions} optionCallback={handleDotsMenuCallback} />
                 {isComponentVisible && <AppointmentCreatorModal onSubmit={submitUpdateAppointment} startValues={appointment.GetRawData()} onClose={hideComponent} />}
             </div>
             <div>

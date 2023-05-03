@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
+import {SectionFormData} from "../components/modal/SectionCreatorModal";
 
 export class SectionModel {
     [immerable] = true
@@ -37,5 +38,20 @@ export class SectionModel {
 
     get optional(): boolean {
         return this._optional;
+    }
+
+    set title(value: string) {
+        this._title = value;
+    }
+
+    set optional(value: boolean) {
+        this._optional = value;
+    }
+
+    public GetRawData(): SectionFormData {
+        return {
+            title: this._title,
+            optional: this._optional
+        }
     }
 }

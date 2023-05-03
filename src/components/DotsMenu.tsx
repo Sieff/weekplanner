@@ -8,10 +8,26 @@ type DotsMenuProps = {
     optionCallback: (value: any) => void;
 }
 
-export type Option = {
+type Option = {
     label: string;
     value: any;
 }
+
+export enum EditActions {
+    delete,
+    edit
+}
+
+export const EditOptions: Option[] = [
+    {
+        label: "Bearbeiten",
+        value: EditActions.edit
+    },
+    {
+        label: "Löschen",
+        value: EditActions.delete
+    }
+]
 
 export const DotsMenu = ({options, optionCallback}: DotsMenuProps) => {
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);

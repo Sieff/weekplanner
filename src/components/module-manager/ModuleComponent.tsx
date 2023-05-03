@@ -6,6 +6,9 @@ import {SectionCreatorModal, SectionFormData} from "../modal/SectionCreatorModal
 import {SectionModel} from "../../models/SectionModel";
 import {ColorVariant} from "../../models/Variant";
 import {cls} from "../../styles/cls";
+import {useComponentVisible} from "../../hooks/UseComponentVisible";
+import {Button} from "../Button";
+import React from "react";
 
 type ModuleEditorProps = {
     module: ModuleModel;
@@ -25,10 +28,12 @@ const StyleMap: {[key in ColorVariant]: string} = {
 export const ModuleComponent = ({module}: ModuleEditorProps) => {
     const dispatch = useDispatch();
     const sections = useSelector((state) => selectSectionsByModule(state, module.id));
+    const { isComponentVisible, showComponent, hideComponent } = useComponentVisible(false);
 
     const onCreate = (sectionFormData: SectionFormData) => {
         const newSection = new SectionModel(module.id, sectionFormData.title, sectionFormData.optional, module.variant);
         dispatch(addSection(newSection));
+        hideComponent();
     };
 
     return (
@@ -37,7 +42,8 @@ export const ModuleComponent = ({module}: ModuleEditorProps) => {
             <h2>{module.title}</h2>
             {sections.map((section) =>
                 <SectionComponent section={section} key={section.id} />)}
-            <SectionCreatorModal submitCallback={onCreate} variant={module.variant} />
+            <Button onClick={showComponent} variant={module.variant}>Abschnitt hinzufügen</Button>
+            {isComponentVisible && <SectionCreatorModal onSubmit={onCreate} onClose={hideComponent} />}
         </div>
     )
 }

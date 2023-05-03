@@ -10,6 +10,7 @@ import {SectionModel} from "../models/SectionModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 import {RootState} from "../store";
 import {AppointmentFormData} from "../components/modal/AppointmentCreatorModal";
+import {SectionFormData} from "../components/modal/SectionCreatorModal";
 
 export const modulesAdapter = createEntityAdapter<ModuleModel>();
 const sectionsAdapter = createEntityAdapter<SectionModel>();
@@ -61,6 +62,12 @@ export const ModuleStateSlice = createSlice({
             appointment.weekday = action.payload.data.weekday;
             appointmentsAdapter.setOne(state.appointments as EntityState<AppointmentModel>, appointment as AppointmentModel);
         },
+        updateSection: (state, action: PayloadAction<{data: SectionFormData, section: SectionModel}>) => {
+            const section = state.sections.entities[action.payload.section.id]!;
+            section.title = action.payload.data.title;
+            section.optional = action.payload.data.optional;
+            sectionsAdapter.setOne(state.sections as EntityState<SectionModel>, section as SectionModel);
+        },
     },
 });
 
@@ -71,7 +78,7 @@ export type ModuleState = {
 }
 
 // Action creators are generated for each case reducer function
-export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateAppointmentsActive, updateAppointment } = ModuleStateSlice.actions
+export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateAppointmentsActive, updateAppointment, updateSection } = ModuleStateSlice.actions
 
 export const {
     selectAll: selectModules,
