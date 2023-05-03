@@ -38,7 +38,11 @@ export const ModuleStateSlice = createSlice({
             sectionsAdapter.addOne(state.sections as EntityState<SectionModel>, action.payload);
         },
         removeSection: (state, action: PayloadAction<SectionModel>) => {
+            const appointments = Object.values(state.appointments.entities)
+                .filter((appointment) => appointment?.sectionId === action.payload.id)
+                .map((appointment) => appointment?.id as string);
             sectionsAdapter.removeOne(state.sections as EntityState<SectionModel>, action.payload.id);
+            appointmentsAdapter.removeMany(state.appointments as EntityState<AppointmentModel>, appointments);
         },
         addAppointment: (state, action: PayloadAction<AppointmentModel>) => {
             appointmentsAdapter.addOne(state.appointments as EntityState<AppointmentModel>, action.payload);
