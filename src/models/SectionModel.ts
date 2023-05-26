@@ -2,6 +2,15 @@ import { v4 as uuid } from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
 import {SectionFormData} from "../components/modal/SectionCreatorModal";
+import {VariantService} from "../services/VariantService";
+
+export interface SectionModelData {
+    moduleId: string;
+    id: string;
+    variant: string;
+    title: string;
+    optional: boolean;
+}
 
 export class SectionModel {
     [immerable] = true
@@ -12,12 +21,28 @@ export class SectionModel {
     private _title: string;
     private _optional: boolean;
 
-    constructor(moduleId: string, title: string, optional: boolean, variant: ColorVariant) {
-        this._id = uuid();
+    constructor(moduleId: string, title: string, optional: boolean, variant: ColorVariant);
+    constructor(moduleId: string, title: string, optional: boolean, variant: ColorVariant, id: string);
+    constructor(moduleId: string, title: string, optional: boolean, variant: ColorVariant, id?: string) {
+        this._id = id ?? uuid();
         this._title = title;
         this._optional = optional;
         this._moduleId = moduleId;
         this._variant = variant;
+    }
+
+    static from(data: SectionModelData) {
+        const variant = Object.entries(ColorVariant).find(([key, value]) => key === data.variant);
+        if (!variant) {
+            const variantService = new VariantService();
+            return new SectionModel(data.moduleId, data.title, data.optional, variantService.GenerateVariant(), data.id);
+        } else {
+            return new SectionModel(data.moduleId, data.title, data.optional, variant[1], data.id);
+        }
+    }
+
+    asData(): SectionModelData {
+        return {moduleId: this._moduleId, id: this._id, variant: this._variant, title: this._title, optional: this._optional}
     }
 
     get id(): string {

@@ -20,7 +20,7 @@ export const ToolBar = () => {
 
     const onCreate = (moduleFormData: ModuleFormData) => {
         const newModule = new ModuleModel(moduleFormData.title, variantService.GenerateVariant());
-        dispatch(addModule(newModule.asData()));
+        dispatch(addModule(newModule));
     };
 
     const generateSchedule = () => {

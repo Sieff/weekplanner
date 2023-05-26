@@ -6,14 +6,14 @@ import {
     PayloadAction
 } from '@reduxjs/toolkit'
 import {ModuleModel, ModuleModelData} from "../models/ModuleModel";
-import {SectionModel} from "../models/SectionModel";
+import {SectionModel, SectionModelData} from "../models/SectionModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 import {RootState} from "../store";
 import {AppointmentFormData} from "../components/modal/AppointmentCreatorModal";
 import {SectionFormData} from "../components/modal/SectionCreatorModal";
 
 export const modulesAdapter = createEntityAdapter<ModuleModelData>();
-const sectionsAdapter = createEntityAdapter<SectionModel>();
+const sectionsAdapter = createEntityAdapter<SectionModelData>();
 const appointmentsAdapter = createEntityAdapter<AppointmentModel>();
 
 
@@ -28,20 +28,20 @@ export const ModuleStateSlice = createSlice({
     name: 'modules',
     initialState,
     reducers: {
-        addModule: (state, action: PayloadAction<ModuleModelData>) => {
-            modulesAdapter.addOne(state.modules as EntityState<ModuleModelData>, action.payload);
+        addModule: (state, action: PayloadAction<ModuleModel>) => {
+            modulesAdapter.addOne(state.modules as EntityState<ModuleModelData>, action.payload.asData());
         },
         removeModule: (state, action: PayloadAction<ModuleModel>) => {
             modulesAdapter.removeOne(state.modules as EntityState<ModuleModelData>, action.payload.id);
         },
         addSection: (state, action: PayloadAction<SectionModel>) => {
-            sectionsAdapter.addOne(state.sections as EntityState<SectionModel>, action.payload);
+            sectionsAdapter.addOne(state.sections as EntityState<SectionModelData>, action.payload.asData());
         },
         removeSection: (state, action: PayloadAction<SectionModel>) => {
             const appointments = Object.values(state.appointments.entities)
                 .filter((appointment) => appointment?.sectionId === action.payload.id)
                 .map((appointment) => appointment?.id as string);
-            sectionsAdapter.removeOne(state.sections as EntityState<SectionModel>, action.payload.id);
+            sectionsAdapter.removeOne(state.sections as EntityState<SectionModelData>, action.payload.id);
             appointmentsAdapter.removeMany(state.appointments as EntityState<AppointmentModel>, appointments);
         },
         addAppointment: (state, action: PayloadAction<AppointmentModel>) => {
@@ -70,14 +70,14 @@ export const ModuleStateSlice = createSlice({
             const section = state.sections.entities[action.payload.section.id]!;
             section.title = action.payload.data.title;
             section.optional = action.payload.data.optional;
-            sectionsAdapter.setOne(state.sections as EntityState<SectionModel>, section as SectionModel);
+            sectionsAdapter.setOne(state.sections as EntityState<SectionModelData>, section as SectionModelData);
         },
     },
 });
 
 export type ModuleState = {
     modules: EntityState<ModuleModelData>;
-    sections: EntityState<SectionModel>;
+    sections: EntityState<SectionModelData>;
     appointments: EntityState<AppointmentModel>;
 }
 
@@ -95,10 +95,14 @@ export const selectModules = createSelector(
 );
 
 export const {
-    selectAll: selectSections,
+    selectAll: selectSectionData,
     // Pass in a selector that returns the posts slice of state
 } = sectionsAdapter.getSelectors<RootState>((state) => state.modules.sections);
 
+export const selectSections = createSelector(
+    [selectSectionData],
+    (sections) => sections.map((sectionData) => SectionModel.from(sectionData))
+);
 export const selectSectionsByModule = createSelector(
     [selectSections, (state, moduleId) => moduleId],
     (sections, moduleId) => sections.filter(section => section.moduleId === moduleId)
