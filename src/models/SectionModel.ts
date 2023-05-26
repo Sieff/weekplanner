@@ -2,7 +2,6 @@ import { v4 as uuid } from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
 import {SectionFormData} from "../components/modal/SectionCreatorModal";
-import {VariantService} from "../services/VariantService";
 
 export interface SectionModelData {
     moduleId: string;
@@ -32,13 +31,9 @@ export class SectionModel {
     }
 
     static from(data: SectionModelData) {
-        const variant = Object.entries(ColorVariant).find(([key, value]) => key === data.variant);
-        if (!variant) {
-            const variantService = new VariantService();
-            return new SectionModel(data.moduleId, data.title, data.optional, variantService.GenerateVariant(), data.id);
-        } else {
-            return new SectionModel(data.moduleId, data.title, data.optional, variant[1], data.id);
-        }
+        const variant = Object.values(ColorVariant).find((variant) => variant === data.variant)!;
+
+        return new SectionModel(data.moduleId, data.title, data.optional, variant, data.id);
     }
 
     asData(): SectionModelData {

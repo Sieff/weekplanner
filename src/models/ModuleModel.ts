@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
-import {VariantService} from "../services/VariantService";
 
 export interface ModuleModelData {
     id: string;
@@ -27,13 +26,9 @@ export class ModuleModel {
     }
 
     static from(data: ModuleModelData) {
-        const variant = Object.entries(ColorVariant).find(([key, value]) => key === data.variant);
-        if (!variant) {
-            const variantService = new VariantService();
-            return new ModuleModel(data.title, variantService.GenerateVariant(), data.id);
-        } else {
-            return new ModuleModel(data.title, variant[1], data.id);
-        }
+        const variant = Object.values(ColorVariant).find((variant) => variant === data.variant)!;
+
+        return new ModuleModel(data.title, variant, data.id);
     }
 
     asData(): ModuleModelData {

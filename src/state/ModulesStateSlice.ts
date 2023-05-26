@@ -7,14 +7,14 @@ import {
 } from '@reduxjs/toolkit'
 import {ModuleModel, ModuleModelData} from "../models/ModuleModel";
 import {SectionModel, SectionModelData} from "../models/SectionModel";
-import {AppointmentModel} from "../models/AppointmentModel";
+import {AppointmentModel, AppointmentModelData} from "../models/AppointmentModel";
 import {RootState} from "../store";
 import {AppointmentFormData} from "../components/modal/AppointmentCreatorModal";
 import {SectionFormData} from "../components/modal/SectionCreatorModal";
 
 export const modulesAdapter = createEntityAdapter<ModuleModelData>();
 const sectionsAdapter = createEntityAdapter<SectionModelData>();
-const appointmentsAdapter = createEntityAdapter<AppointmentModel>();
+const appointmentsAdapter = createEntityAdapter<AppointmentModelData>();
 
 
 // Define the initial state using that type
@@ -42,29 +42,30 @@ export const ModuleStateSlice = createSlice({
                 .filter((appointment) => appointment?.sectionId === action.payload.id)
                 .map((appointment) => appointment?.id as string);
             sectionsAdapter.removeOne(state.sections as EntityState<SectionModelData>, action.payload.id);
-            appointmentsAdapter.removeMany(state.appointments as EntityState<AppointmentModel>, appointments);
+            appointmentsAdapter.removeMany(state.appointments as EntityState<AppointmentModelData>, appointments);
         },
         addAppointment: (state, action: PayloadAction<AppointmentModel>) => {
-            appointmentsAdapter.addOne(state.appointments as EntityState<AppointmentModel>, action.payload);
+            appointmentsAdapter.addOne(state.appointments as EntityState<AppointmentModelData>, action.payload.asData());
         },
         removeAppointment: (state, action: PayloadAction<AppointmentModel>) => {
-            appointmentsAdapter.removeOne(state.appointments as EntityState<AppointmentModel>, action.payload.id);
+            appointmentsAdapter.removeOne(state.appointments as EntityState<AppointmentModelData>, action.payload.id);
         },
         updateAppointmentsActive: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
+            //TODO: bug
             const newEntries = Object.entries(action.payload).map(([key, active]) => {
                 const appointment = state.appointments.entities[key]!;
                 appointment.active = active;
-                return [key, appointment as AppointmentModel];
+                return [key, appointment as AppointmentModelData];
             });
-            appointmentsAdapter.setMany(state.appointments as EntityState<AppointmentModel>, Object.fromEntries(newEntries));
+            appointmentsAdapter.setMany(state.appointments as EntityState<AppointmentModelData>, Object.fromEntries(newEntries));
         },
         updateAppointment: (state, action: PayloadAction<{data: AppointmentFormData, appointment: AppointmentModel}>) => {
             const appointment = state.appointments.entities[action.payload.appointment.id]!;
             appointment.title = action.payload.data.title;
-            appointment.start = action.payload.data.start;
-            appointment.end = action.payload.data.end;
+            appointment.start = action.payload.data.start.format('HH:mm');
+            appointment.end = action.payload.data.end.format('HH:mm');
             appointment.weekday = action.payload.data.weekday;
-            appointmentsAdapter.setOne(state.appointments as EntityState<AppointmentModel>, appointment as AppointmentModel);
+            appointmentsAdapter.setOne(state.appointments as EntityState<AppointmentModelData>, appointment as AppointmentModelData);
         },
         updateSection: (state, action: PayloadAction<{data: SectionFormData, section: SectionModel}>) => {
             const section = state.sections.entities[action.payload.section.id]!;
@@ -78,7 +79,7 @@ export const ModuleStateSlice = createSlice({
 export type ModuleState = {
     modules: EntityState<ModuleModelData>;
     sections: EntityState<SectionModelData>;
-    appointments: EntityState<AppointmentModel>;
+    appointments: EntityState<AppointmentModelData>;
 }
 
 // Action creators are generated for each case reducer function
@@ -109,9 +110,14 @@ export const selectSectionsByModule = createSelector(
 );
 
 export const {
-    selectAll: selectAppointments
+    selectAll: selectAppointmentData
     // Pass in a selector that returns the posts slice of state
 } = appointmentsAdapter.getSelectors<RootState>((state) => state.modules.appointments);
+
+export const selectAppointments = createSelector(
+    [selectAppointmentData],
+    (appointments) => appointments.map((appointmentData) => AppointmentModel.from(appointmentData))
+);
 
 export const selectAppointmentsBySection = createSelector(
     [selectAppointments, (state, sectionId) => sectionId],
