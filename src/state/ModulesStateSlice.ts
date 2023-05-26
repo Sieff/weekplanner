@@ -5,14 +5,14 @@ import {
     EntityState,
     PayloadAction
 } from '@reduxjs/toolkit'
-import {ModuleModel} from "../models/ModuleModel";
+import {ModuleModel, ModuleModelData} from "../models/ModuleModel";
 import {SectionModel} from "../models/SectionModel";
 import {AppointmentModel} from "../models/AppointmentModel";
 import {RootState} from "../store";
 import {AppointmentFormData} from "../components/modal/AppointmentCreatorModal";
 import {SectionFormData} from "../components/modal/SectionCreatorModal";
 
-export const modulesAdapter = createEntityAdapter<ModuleModel>();
+export const modulesAdapter = createEntityAdapter<ModuleModelData>();
 const sectionsAdapter = createEntityAdapter<SectionModel>();
 const appointmentsAdapter = createEntityAdapter<AppointmentModel>();
 
@@ -28,11 +28,11 @@ export const ModuleStateSlice = createSlice({
     name: 'modules',
     initialState,
     reducers: {
-        addModule: (state, action: PayloadAction<ModuleModel>) => {
-            modulesAdapter.addOne(state.modules as EntityState<ModuleModel>, action.payload);
+        addModule: (state, action: PayloadAction<ModuleModelData>) => {
+            modulesAdapter.addOne(state.modules as EntityState<ModuleModelData>, action.payload);
         },
         removeModule: (state, action: PayloadAction<ModuleModel>) => {
-            modulesAdapter.removeOne(state.modules as EntityState<ModuleModel>, action.payload.id);
+            modulesAdapter.removeOne(state.modules as EntityState<ModuleModelData>, action.payload.id);
         },
         addSection: (state, action: PayloadAction<SectionModel>) => {
             sectionsAdapter.addOne(state.sections as EntityState<SectionModel>, action.payload);
@@ -76,7 +76,7 @@ export const ModuleStateSlice = createSlice({
 });
 
 export type ModuleState = {
-    modules: EntityState<ModuleModel>;
+    modules: EntityState<ModuleModelData>;
     sections: EntityState<SectionModel>;
     appointments: EntityState<AppointmentModel>;
 }
@@ -85,9 +85,14 @@ export type ModuleState = {
 export const { addModule, removeModule, addSection, removeSection, addAppointment, removeAppointment, updateAppointmentsActive, updateAppointment, updateSection } = ModuleStateSlice.actions
 
 export const {
-    selectAll: selectModules,
+    selectAll: selectModuleData,
     // Pass in a selector that returns the posts slice of state
 } = modulesAdapter.getSelectors<RootState>((state) => state.modules.modules);
+
+export const selectModules = createSelector(
+    [selectModuleData],
+    (modules) => modules.map((moduleData) => ModuleModel.from(moduleData))
+);
 
 export const {
     selectAll: selectSections,
