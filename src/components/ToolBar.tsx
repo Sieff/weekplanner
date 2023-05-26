@@ -11,6 +11,7 @@ import {
     updateAppointmentsActive
 } from "../state/ModulesStateSlice";
 import {useComponentVisible} from "../hooks/UseComponentVisible";
+import {DeleteConfirmationModal} from "./modal/DeleteConfirmationModal";
 
 export const ToolBar = () => {
     const variantService = useContext(VariantServiceContext);
@@ -19,6 +20,7 @@ export const ToolBar = () => {
     const appointments = useSelector(selectAppointments);
     const dispatch = useDispatch();
     const { isComponentVisible, showComponent, hideComponent } = useComponentVisible(false);
+    const { isComponentVisible: deleteTimetableVisible, showComponent: showDeleteTimetable, hideComponent: hideDeleteTimetable } = useComponentVisible(false);
 
     const onCreate = (moduleFormData: ModuleFormData) => {
         const newModule = new ModuleModel(moduleFormData.title, variantService.GenerateVariant());
@@ -31,8 +33,9 @@ export const ToolBar = () => {
         dispatch(updateAppointmentsActive(scheduledAppointments));
     }
 
-    const dispatchRemoveAll = () => {
+    const processRemoveAll = () => {
         dispatch(removeAll());
+        hideDeleteTimetable();
     }
 
     return (
@@ -42,9 +45,10 @@ export const ToolBar = () => {
             <Button onClick={generateSchedule}>
                 Zeitplan generieren
             </Button>
-            <Button onClick={dispatchRemoveAll}>
+            <Button onClick={showDeleteTimetable}>
                 Alle Module Löschen
             </Button>
+            {deleteTimetableVisible && <DeleteConfirmationModal onSubmit={processRemoveAll} onClose={hideDeleteTimetable} />}
         </div>
     )
 }

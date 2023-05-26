@@ -30,7 +30,7 @@ export const ModuleCreatorModal = ({onSubmit, onClose, startValues}: ModuleCreat
     };
 
     return (
-        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={!!startValues ? "Modul Bearbeiten" : "Neues Modul"} edit={!!startValues}>
+        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={!!startValues ? "Modul Bearbeiten" : "Neues Modul"} submitText={!!startValues ? "Speichern" : "Hinzufügen"}>
             <Form>
                 <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title || !!startValues?.title}/>
             </Form>

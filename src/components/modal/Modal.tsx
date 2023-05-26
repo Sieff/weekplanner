@@ -2,16 +2,17 @@ import React, {useEffect, useRef} from "react";
 import styles from "./Modal.module.scss";
 import {Portal} from "../Portal";
 import {Button} from "../Button";
-import {ButtonVariant} from "../../models/Variant";
+import {ButtonVariant, ColorVariant} from "../../models/Variant";
 
 type ModalProps = React.PropsWithChildren<{
     onClose: () => void;
     onSubmit: () => void;
     title: string;
-    edit?: boolean;
+    submitText: string;
+    variant?: ColorVariant;
 }>
 
-const Modal = ({onClose, onSubmit, title, children, edit}: ModalProps) => {
+const Modal = ({onClose, onSubmit, title, children, submitText, variant}: ModalProps) => {
     const backdrop = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -41,9 +42,9 @@ const Modal = ({onClose, onSubmit, title, children, edit}: ModalProps) => {
                                 Abbrechen
                             </div>
                         </Button>
-                        <Button onClick={onSubmit} variant={ButtonVariant.accept}>
+                        <Button onClick={onSubmit} variant={variant ?? ButtonVariant.accept}>
                             <div className={styles.modalButtonContent}>
-                                {edit ? "Speichern" : "Hinzufügen"}
+                                {submitText}
                             </div>
                         </Button>
                     </div>

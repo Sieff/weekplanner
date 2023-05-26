@@ -79,7 +79,7 @@ export const AppointmentCreatorModal = ({onSubmit, startValues, onClose}: Appoin
     };
 
     return (
-        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={!!startValues ? "Veranstaltung Bearbeiten" : "Neue Veranstaltung"} edit={!!startValues}>
+        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={!!startValues ? "Veranstaltung Bearbeiten" : "Neue Veranstaltung"} submitText={!!startValues ? "Speichern" : "Hinzufügen"}>
             <Form>
                 <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title || !!startValues?.title}/>
                 <div className="w-full flex content-between gap-m">
