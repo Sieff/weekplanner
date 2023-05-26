@@ -1,6 +1,5 @@
 import {FieldValues, useForm} from "react-hook-form";
-import React, {useState} from "react";
-import {Button} from "../Button";
+import React from "react";
 import Modal from "./Modal";
 import {TextField} from "../form/TextField";
 import {Form} from "../form/Form";
@@ -9,7 +8,9 @@ type ModuleCreatorProps = {
     /**
      * Callback that is called with the created appointment
      */
-    submitCallback: (moduleFormData: ModuleFormData) => void;
+    onSubmit: (moduleFormData: ModuleFormData) => void;
+    onClose: () => void;
+    startValues?: ModuleFormData;
 };
 
 export type ModuleFormData = {
@@ -20,32 +21,19 @@ const defaultValues = {
     title: "",
 }
 
-export const ModuleCreatorModal = ({submitCallback}: ModuleCreatorProps) => {
-    const {register, handleSubmit, formState: { errors, dirtyFields } , reset} = useForm({defaultValues});
-    const [show, setShow] = useState(false);
+export const ModuleCreatorModal = ({onSubmit, onClose, startValues}: ModuleCreatorProps) => {
+    const {register, handleSubmit, formState: { errors, dirtyFields } , reset} = useForm({defaultValues, values: startValues});
 
-    const openModal = () => setShow(true);
-    const closeModal = () => setShow(false);
-
-    const onSubmit = (data: FieldValues) => {
-        submitCallback({title: data.title});
-        closeModal();
+    const processSubmit = (data: FieldValues) => {
+        onSubmit({title: data.title});
         reset();
     };
 
-
     return (
-        <>
-            <Button onClick={openModal}>Modul hinzufügen</Button>
-            {show && (
-                <Modal onClose={closeModal} onSubmit={handleSubmit(onSubmit)} title={"Neues Modul"}>
-                    <Form>
-                        <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title}/>
-                    </Form>
-                </Modal>
-            )}
-        </>
-
-
+        <Modal onClose={onClose} onSubmit={handleSubmit(processSubmit)} title={!!startValues ? "Modul Bearbeiten" : "Neues Modul"} edit={!!startValues}>
+            <Form>
+                <TextField register={register("title", {required: true})} caption="Name" error={errors.title} dirty={dirtyFields.title || !!startValues?.title}/>
+            </Form>
+        </Modal>
     )
 }

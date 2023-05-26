@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import {immerable} from "immer";
 import {ColorVariant} from "./Variant";
+import {ModuleFormData} from "../components/modal/ModuleCreatorModal";
 
 export interface ModuleModelData {
     id: string;
@@ -33,6 +34,10 @@ export class ModuleModel {
 
     asData(): ModuleModelData {
         return {id: this._id, variant: this._variant, title: this._title}
+    }
+
+    GetRawData(): ModuleFormData {
+        return {title: this._title};
     }
 
     get id(): string {

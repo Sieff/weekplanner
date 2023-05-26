@@ -1,7 +1,13 @@
 import {ModuleModel} from "../../models/ModuleModel";
 import {SectionComponent} from "./SectionComponent";
 import {useDispatch, useSelector} from "react-redux";
-import {addSection, selectSectionsByModule} from "../../state/ModulesStateSlice";
+import {
+    addSection,
+    removeModule,
+    removeSection,
+    selectSectionsByModule, updateAppointment, updateModule,
+    updateSection
+} from "../../state/ModulesStateSlice";
 import {SectionCreatorModal, SectionFormData} from "../modal/SectionCreatorModal";
 import {SectionModel} from "../../models/SectionModel";
 import {ColorVariant} from "../../models/Variant";
@@ -9,6 +15,8 @@ import {cls} from "../../styles/cls";
 import {useComponentVisible} from "../../hooks/UseComponentVisible";
 import {Button} from "../Button";
 import React from "react";
+import {DotsMenu, EditActions, EditOptions} from "../DotsMenu";
+import {ModuleCreatorModal, ModuleFormData} from "../modal/ModuleCreatorModal";
 
 type ModuleEditorProps = {
     module: ModuleModel;
@@ -28,22 +36,43 @@ const StyleMap: {[key in ColorVariant]: string} = {
 export const ModuleComponent = ({module}: ModuleEditorProps) => {
     const dispatch = useDispatch();
     const sections = useSelector((state) => selectSectionsByModule(state, module.id));
-    const { isComponentVisible, showComponent, hideComponent } = useComponentVisible(false);
+    const { isComponentVisible: sectionCreatorVisible, showComponent: showSectionCreator, hideComponent: hideSectionCreator } = useComponentVisible(false);
+    const { isComponentVisible: moduleEditorVisible, showComponent: showModuleEditor, hideComponent: hideModuleEditor } = useComponentVisible(false);
 
     const onCreate = (sectionFormData: SectionFormData) => {
         const newSection = new SectionModel(module.id, sectionFormData.title, sectionFormData.optional, module.variant);
         dispatch(addSection(newSection));
-        hideComponent();
+        hideSectionCreator();
     };
+
+    const handleDotsMenuCallback = (action: EditActions) => {
+        switch (action) {
+            case EditActions.delete:
+                dispatch(removeModule(module));
+                break;
+            case EditActions.edit:
+                showModuleEditor();
+                break;
+        }
+    }
+
+    const submitUpdateModule = (data: ModuleFormData) => {
+        dispatch(updateModule({module, data}));
+        hideModuleEditor();
+    }
 
     return (
         <div className={cls("p-l max-w-lg flex flex-col gap-m rounded-rl border-2 shadow-box",
             StyleMap[module.variant])}>
-            <h2 className={"[word-break:break-word]"}>{module.title}</h2>
+            <div className={"flex items-center gap-m"}>
+                <h2 className={"[word-break:break-word]"}>{module.title}</h2>
+                <DotsMenu options={EditOptions} optionCallback={handleDotsMenuCallback} />
+                {moduleEditorVisible && <ModuleCreatorModal onSubmit={submitUpdateModule} startValues={module.GetRawData()} onClose={hideModuleEditor} />}
+            </div>
             {sections.map((section) =>
                 <SectionComponent section={section} key={section.id} />)}
-            <Button onClick={showComponent} variant={module.variant}>Abschnitt hinzufügen</Button>
-            {isComponentVisible && <SectionCreatorModal onSubmit={onCreate} onClose={hideComponent} />}
+            <Button onClick={showSectionCreator} variant={module.variant}>Abschnitt hinzufügen</Button>
+            {sectionCreatorVisible && <SectionCreatorModal onSubmit={onCreate} onClose={hideSectionCreator} />}
         </div>
     )
 }
