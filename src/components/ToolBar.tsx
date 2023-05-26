@@ -10,7 +10,6 @@ import {
     selectSections,
     updateAppointmentsActive
 } from "../state/ModulesStateSlice";
-import {SectionCreatorModal} from "./modal/SectionCreatorModal";
 import {useComponentVisible} from "../hooks/UseComponentVisible";
 
 export const ToolBar = () => {

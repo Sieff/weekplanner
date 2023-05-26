@@ -4,9 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addSection,
     removeModule,
-    removeSection,
-    selectSectionsByModule, updateAppointment, updateModule,
-    updateSection
+    selectSectionsByModule, updateModule
 } from "../../state/ModulesStateSlice";
 import {SectionCreatorModal, SectionFormData} from "../modal/SectionCreatorModal";
 import {SectionModel} from "../../models/SectionModel";

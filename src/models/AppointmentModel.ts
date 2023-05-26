@@ -29,8 +29,8 @@ export class AppointmentModel {
     private _active: boolean = true;
 
     constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment)
-    constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment, id: string)
-    constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment, id?: string) {
+    constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment, id: string, active: boolean)
+    constructor(sectionId: string, variant: ColorVariant, title: string, weekday: Weekday, start: Moment, end: Moment, id?: string, active?: boolean) {
         this._id = id ?? uuid();
         this._title = title;
         this._weekday = weekday;
@@ -38,13 +38,14 @@ export class AppointmentModel {
         this._end = end;
         this._sectionId = sectionId;
         this._variant = variant;
+        this._active = active !== undefined ? active : true;
     }
 
     static from(data: AppointmentModelData) {
         const variant = Object.values(ColorVariant).find((variant) => variant === data.variant)!;
         const weekday = Object.values(Weekday).find((weekday) => weekday === data.weekday)!;
 
-        return new AppointmentModel(data.sectionId, variant, data.title, weekday, moment(data.start, 'HH:mm').utc(true), moment(data.end, 'HH:mm').utc(true), data.id);
+        return new AppointmentModel(data.sectionId, variant, data.title, weekday, moment(data.start, 'HH:mm').utc(true), moment(data.end, 'HH:mm').utc(true), data.id, data.active);
     }
 
     asData(): AppointmentModelData {

@@ -67,13 +67,12 @@ export const ModuleStateSlice = createSlice({
             appointmentsAdapter.removeAll(state.appointments as EntityState<AppointmentModelData>);
         },
         updateAppointmentsActive: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
-            //TODO: bug
             const newEntries = Object.entries(action.payload).map(([key, active]) => {
                 const appointment = state.appointments.entities[key]!;
                 appointment.active = active;
                 return [key, appointment as AppointmentModelData];
             });
-            appointmentsAdapter.setMany(state.appointments as EntityState<AppointmentModelData>, Object.fromEntries(newEntries));
+            appointmentsAdapter.upsertMany(state.appointments as EntityState<AppointmentModelData>, Object.fromEntries(newEntries));
         },
         updateAppointment: (state, action: PayloadAction<{data: AppointmentFormData, appointment: AppointmentModel}>) => {
             const appointment = state.appointments.entities[action.payload.appointment.id]!;
